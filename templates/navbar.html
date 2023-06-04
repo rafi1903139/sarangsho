@@ -1,0 +1,43 @@
+{% load static %}
+<style>
+
+
+</style>
+<nav class="navbar sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <img src="{% static 'img/logo.png' %}" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
+      <div class="logo-text">Sarangsho</div>
+    </a>
+
+    <form method="GET" action="{% url 'home' %}">
+      <input type="text" name="q" placeholder="Search books">
+    </form>
+
+    <div>
+      {% if user.is_authenticated %}
+      <form class="form-inline ml-auto">
+
+        <a href="{% url 'user_profile' request.user.id %}">
+          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" class="rounded-circle shadow-4 me-2"
+            style="width: 50px;" alt="Avatar" />
+        </a>
+
+
+        <a href="{% url 'logout' %}" class="btn btn-outline-secondary me-1">
+          Log Out</a>
+      </form>
+
+      {% else %}
+      <form class="form-inline ml-auto">
+        <a href="{% url 'login' %}" class="btn btn-outline-secondary me-1">
+          Log In</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary ml-2">
+          Sign up</a>
+      </form>
+      {% endif %}
+    </div>
+
+
+  </div>
+</nav>

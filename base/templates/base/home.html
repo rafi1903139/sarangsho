@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %} Home {% endblock title %}
+{% block content %}
+
+<style>
+    .block {
+        width: 120px;
+        height: 170px;
+        overflow: hidden !important;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+        /* background-color: #A0C3D2; */
+    }
+
+    .small-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+
+{% if user.is_authenticated %}
+Hi {{ user.username }}
+
+<div class="main-section container">
+    <div class="row">
+        <div class="col-8 main-container">
+            <div class="discover">
+                <h3>Discover your favorite</h3>
+                <div class="discover-books">
+                    {% for book in books %}
+
+                    <a href="{% url 'book_detail' book.id %}">
+                        <div class="block">
+
+                            <img class="small-cover" src="{{ book.cover_image.url }}">
+
+                        </div>
+                    </a>
+
+
+                    {% endfor %}
+
+
+                </div>
+            </div>
+            <div class="browse">
+                <h3>Search and browse books</h3>
+                <form action="" method="get">
+                    <input type="text" placeholder="Title/ Author">
+                </form>
+                <div class="category">
+                    {% for genre in genres %}
+                    <a href="{% url 'book_list' genre.id %}">{{genre.name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-4 side-container">
+            <h3>News and interviews</h3>
+            <div class="card">
+                <img src="{% static 'img/card_hero.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="hero  container">
+    <div class="hero-body col-6">
+        <h1>Discover the unknown</h1>
+        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit, nesciunt? Quas reiciendis natus
+            sint minima ab eaque saepe similique expedita culpa obcaecati cupiditate nam accusamus perspiciatis dicta,
+            soluta dolor atque ipsum eos asperiores aperiam, inventore accusantium ipsa! Adipisci sint illo mollitia
+            deleniti fugiat inventore ullam totam quis. Dolores, fugiat dolorem.</p>
+        <div class="hero-btn">
+            <a class="btn btn-primary" href="{% url 'login' %}">Log in</a>
+            <a href="{% url 'signup' %}" class="btn btn-outline-secondary">Sign up</a>
+        </div>
+    </div>
+    <div class="hero-img col-6">
+        <img src="{% static 'img/hero.jpg' %}" alt="hero image">
+    </div>
+
+
+</div>
+
+<div class="main-section container">
+    <div class="row">
+        <div class="col-8 main-container">
+            <div class="discover">
+                <h3>Discover your favorite</h3>
+                <div class="discover-books">
+                    {% for book in books %}
+                    <a href="{% url 'book_detail' book.id %}">
+                        <div class="block">
+                            <img class="small-cover" src="{{ book.cover_image.url }}">
+                        </div>
+                    </a>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="browse">
+                <h3>Search and browse books</h3>
+                <form action="" method="get">
+                    <input type="text" placeholder="Title/ Author">
+                </form>
+                <div class="category">
+
+                    {% for genre in genres %}
+                    <a href="#">{{genre.name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-4 side-container">
+            <h3>News and interviews</h3>
+            <div class="card">
+                <img src="{% static 'img/card_hero.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock content %}
+
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock footer %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block title %} 
+    Search found
+{% endblock title %} 
+
+{% block content %} 
+    <h1>{{genre.name}}</h1>
+    <ul>
+        {% for book in books %}
+        <li><a href="{% url 'book_detail' book.id %}">{{book}}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %} 
+

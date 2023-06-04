@@ -1,0 +1,124 @@
+.navbar-brand{
+    display: flex;
+}
+.logo-text{
+    display: inline-block;
+    margin: auto;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.hero{
+    display: flex;
+    justify-content: center;
+    background-color: #A0C3D2;
+    border-radius: 50px;
+    padding: 1.2rem;
+}
+.hero-img img{
+    width: 800px;
+    border-radius: 50px;
+}
+.hero-body{
+    
+    padding: 0 2rem; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+.hero-body h1{
+
+    font-size: 4em !important;
+    margin: .5em 0em;
+    text-align: center;
+  
+}
+.hero-body p{
+
+font-size: 1.2rem !important;
+line-height: 2;
+letter-spacing: .1ch;
+text-align: justify;
+flex: 2
+}
+
+.hero-btn{
+    margin-top: 24px;
+    justify-self: flex-end;
+    margin-bottom: 2em;
+}
+.hero-btn > .btn 
+{
+    width: 200px !important;
+    margin-right: 8px;
+    font-size: 24px;
+}
+
+.main-section{
+    margin-top: 24px;
+    padding: 8px !important;
+}
+
+
+.discover{
+    width: 100%;
+    height: auto;
+    background-color: #F7F5EB;
+    padding: 1.5rem;
+}
+.discover-books{
+    margin: 1rem 0rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.browse{
+    padding: 1.5rem;
+    margin-top: 24px;
+}
+.category{
+    padding: 1em 0em;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .5em;
+    font-size: 1.3rem;
+}
+
+.footer-wrapper{
+    background-color: #EEEEEE;
+}
+
+footer{
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 300px 300px 1fr;
+    gap: 1em;
+}
+footer > div{
+    padding: 1em;
+}
+footer ul{
+    padding: 0;
+    margin: 0;
+}
+footer ul li{
+    list-style-type: none;
+    font-size: 1.3em;
+    line-height: 1.9em;   
+}
+footer .connect img{
+    width: 50px;
+}
+footer .connect li{
+    float: left;
+    padding-right: 1rem;
+}
+
+
+.big-block{
+    font-size: 2em !important;
+}
