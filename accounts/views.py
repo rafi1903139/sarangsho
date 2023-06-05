@@ -23,7 +23,7 @@ class SignupView(CreateView):
 
 def usersignup(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False) 
             user.is_active = False 

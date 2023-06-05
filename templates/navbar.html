@@ -19,7 +19,7 @@
       <form class="form-inline ml-auto">
 
         <a href="{% url 'user_profile' request.user.id %}">
-          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" class="rounded-circle shadow-4 me-2"
+          <img src="{{user.avatar.url}}" class="rounded-circle shadow-4 me-2"
             style="width: 50px;" alt="Avatar" />
         </a>
 
