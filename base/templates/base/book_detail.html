@@ -1,417 +1,259 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %} 
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ {% load static %} 
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+ {% block title %} 
+    {{book.title}}
+ {% endblock title %} 
 
-    <title>Title of the book</title>
-</head>
+ {% block external %} 
+ <link href="{% static 'css/book_details.css' %}" rel="stylesheet" type="text/css">
+ <!-- Font Awesome Icon Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ {% endblock external %} 
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+ {% block content %} 
 
-    body {
-        font-family: Arial;
-        margin: 0 auto;
 
-    }
 
-    .avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        vertical-align: middle;
-        background-color: #04AA6D;
-    }
-
-    .book-container {
-        padding: 1em;
-        display: grid;
-        grid-template-columns: 1fr 3fr;
-        gap: 2em;
-    }
-
-
-
-
-
-    .book-cover-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: sticky;
-        top: 2em;
-    }
-
-
-
-    .cover-wrapper {
-        width: 200px;
-        height: 300px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-
-    .cover-wrapper img {
-        width: 100%;
-        object-fit: cover;
-
-    }
-
-    .button-wrapper a {
-        text-decoration: none;
-        color: white;
-    }
-
-    .button-style1 {
-        margin: 1em 0em 0em 0em;
-        width: 250px;
-        text-align: center;
-        background-color: green;
-        color: white;
-        padding: .7em;
-        border-radius: 20px 0% 0% 20px;
-        cursor: pointer
-    }
-
-    .book-details-container {
-        padding-top: 1em;
-    }
-
-
-    /*
-        author
-    */
-
-    .author-profile {
-        display: flex;
-        justify-content: space-between;
-        margin: 1rem 0rem;
-    }
-
-    .author-profile-container {
-        display: grid;
-        grid-template-areas:
-            "avatar name"
-            "avatar info";
-
-    }
-
-    .author-profile .avatar {
-        grid-area: avatar;
-        margin: 0px 8px;
-    }
-
-    .author-profile .author-name {
-        grid-area: name;
-        font-weight: bold;
-    }
-
-    .author-profile .author-info {
-        grid-area: info;
-        font-size: .8rem;
-    }
-
-    .review-container {
-        margin-top: 1em;
-        display: grid;
-        grid-template-columns: 1fr 4fr;
-        gap: 1em;
-        padding: 1em;
-    }
-
-    .reviewer-profile {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: start;
-        gap: .2em;
-    }
-
-    .user-rating {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .user-rating .user-rating-date {
-        margin: 16px 0px;
-    }
-
-    .user-feedback {
-        display: flex;
-        gap: 1em;
-    }
-
-
-
-
-
-    /*
-        community rating start
-    */
-
-    .rating-star {
-        margin: 16px 0px;
-    }
-
-    .fa {
-        font-size: 25px;
-    }
-
-    .checked {
-        color: orange;
-    }
-
-    /* Three column layout */
-    .side {
-        float: left;
-        width: 15%;
-        margin-top: 10px;
-    }
-
-    .middle {
-        float: left;
-        width: 70%;
-        margin-top: 10px;
-    }
-
-    /* Place text to the right */
-    .right {
-        text-align: right;
-    }
-
-    /* Clear floats after the columns */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    /* The bar container */
-    .bar-container {
-        width: 100%;
-        background-color: #f1f1f1;
-        text-align: center;
-        color: white;
-    }
-
-    /* Individual bars */
-    .bar-5 {
-        width: 60%;
-        height: 18px;
-        background-color: #04AA6D;
-    }
-
-    .bar-4 {
-        width: 30%;
-        height: 18px;
-        background-color: #2196F3;
-    }
-
-    .bar-3 {
-        width: 10%;
-        height: 18px;
-        background-color: #00bcd4;
-    }
-
-    .bar-2 {
-        width: 4%;
-        height: 18px;
-        background-color: #ff9800;
-    }
-
-    .bar-1 {
-        width: 15%;
-        height: 18px;
-        background-color: #f44336;
-    }
-
-    /* Responsive layout - make the columns stack on top of each other instead of next to each other */
-    @media (max-width: 400px) {
-
-        .side,
-        .middle {
-            width: 100%;
-        }
-
-        /* Hide the right column on small screens */
-        .right {
-            display: none;
-        }
-    }
-
-    /*
-        community rating end
-    */
-
-    /* footer start */
-
-    footer {
-        padding: 1.5rem;
-        display: grid;
-        grid-template-columns: 300px 300px 1fr;
-        gap: 1em;
-        background-color: #EEEEEE;
-        padding-left: 5rem !important;
-    }
-
-    footer>div {
-        padding: 1em;
-    }
-
-    footer ul {
-        padding: 0;
-        margin: 0;
-    }
-
-    footer ul li {
-        list-style-type: none;
-        font-size: 1.3em;
-        line-height: 1.9em;
-    }
-
-    footer .connect img {
-        width: 50px;
-    }
-
-    footer .connect li {
-        float: left;
-        padding-right: 1rem;
-    }
-
-    /* footer end */
-</style>
-
-<body>
-
-    <div class="container">
-        <div class="book-container">
-            <div class="book-cover">
-                <div class="book-cover-container">
-                    <div class="cover-wrapper">
-                        <img src="{{book.cover_image.url}}" alt="book cover">
-                    </div>
-                    <div class="button-wrapper">
-                        <div class="button-style1">
-                            <a href="#">Want to read</a>
-                        </div>
-                    </div>
-                    <div class="button-wrapper">
-                        <div class="button-style1">
-                            Buy online
-                        </div>
-                    </div>
-
-                    <div class="button-wrapper">
-                        <div class="button-style1">
-                            Download PDF
-                        </div>
-                    </div>
-
-
-                    <div class="rating">
-                        <div class="rating-star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                        <h6>Rate this book</h6>
+ <div class="container">
+    <div class="book-container">
+        <div class="book-cover">
+            <div class="book-cover-container">
+                <div class="cover-wrapper">
+                    <img src="{{book.cover_image.url}}" alt="book cover">
+                </div>
+                <div class="button-wrapper">
+                    <div class="button-style1">
+                        <a href="#">Want to read</a>
                     </div>
                 </div>
-            </div>
+                <div class="button-wrapper">
+                    <div class="button-style1">
+                        Buy online
+                    </div>
+                </div>
 
-            <div class="book-details-container">
-                <div class="book-details">
-                    <h1 class="book-name">{{book.title}}</h1>
-                    <h3 class="author-name">
-                        {% for author in authors %}
-                            {{author}} 
-                        {% endfor %} 
+                <div class="button-wrapper">
+                    <div class="button-style1">
+                        Download PDF
+                    </div>
+                </div>
+
+
+                <div class="rating">
+                    <div class="rating-star">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                    </div>
+                    <h6>Rate this book</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="book-details-container">
+            <div class="book-details">
+                <h1 class="book-name">{{book.title}}</h1>
+                <h3 class="author-name">
+                    {% for author in authors %}
+                        {{author}} 
+                    {% endfor %} 
+                </h3>
+                <div class="rating">
+                    <div class="rating-star">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                    </div>
+                    <p>131 ratins . 254 reviews</p>
+                </div>
+                <div class="book-body">
+                    {{book.description}}
+                </div>
+                <div>
+                    Genres
+                </div>
+                <div>
+                    <hr>
+                    <h3>About the author</h3>
+                    {% for author in authors %}
+                        {{author}} 
+                    {% endfor %} 
+                    <div class="author-profile">
+                        <div class="author-profile-container">
+                            <div class="avatar"></div>
+                            <div class="author-name">
+
+                            </div>
+                            <div class="author-info">593 books, 3025 followers</div>
+                        </div>
+                        <div class="author-follow-btn"><button>Follow</button></div>
+
+                    </div>
+                    <div class="author-details">
+                        Ruskin Bond is an Indian author of British descent. He is considered to be an icon among
+                        Indian
+                        writers and children's authors and a top novelist. He wrote his first novel, The Room on the
+                        Roof,
+                        when he was seventeen which won John Llewellyn Rhys Memorial Prize in 1957. Since then he
+                        has
+                        written several novellas, over 500 short stories, as well as various essays and poems, all
+                        of
+                        which
+                        have established him as one of the best-loved and most admired chroniclers of contemporary
+                        India. In
+                        1992 he received the Sahitya Akademi award for English writing, for his short stories
+                        collection,
+                        "Our Trees Still Grow in Dehra", by the Sahitya Akademi, India's National Academy of Letters
+                        in
+                        India. He was awarded the Padma Shri in 1999 for contributions to children's literature. He
+                        now
+                        lives with his adopted family in Landour near Mussoorie.
+                    </div>
+
+                </div>
+
+                <div>
+                    <hr>
+                   <h2> Ratings and reviews</h2>
+                   
+                   <div class="user-review">
+                    <img width="120px" src="{% static 'img/read.png' %}" alt="book reading icon">
+                    <h3>
+                        What do you think
                     </h3>
-                    <div class="rating">
-                        <div class="rating-star">
+                    <div class="rating&reveiw d-flex align-items-center">
+                        <div class="rating-star me-4">
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star"></span>
+                            <h6>Rate this book</h6>
                         </div>
-                        <p>131 ratins . 254 reviews</p>
+                        <a class="btn btn-dark" href="{% url 'book_review' book.id %}">Write a review</a>
                     </div>
-                    <div class="book-body">
-                        {{book.description}}
-                    </div>
+
+                   </div>
+                    <hr>
                     <div>
-                        Genres
+                        <h3>Followings</h3>
                     </div>
                     <div>
                         <hr>
-                        <h3>About the author</h3>
-                        {% for author in authors %}
-                            {{author}} 
-                        {% endfor %} 
-                        <div class="author-profile">
-                            <div class="author-profile-container">
-                                <div class="avatar"></div>
-                                <div class="author-name">
+                        <h2>Community Reviews</h2>
+                        <div>
 
+                            <div class="communtiy-wrapper">
+                               
+
+                                <div class="rating">
+                                    <div class="rating-star">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+                                    <p>131 ratins . 254 reviews</p>
                                 </div>
-                                <div class="author-info">593 books, 3025 followers</div>
+                                <hr style="border:3px solid #f1f1f1">
+
+                                <div class="row">
+                                    <div class="side">
+                                        <div>5 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-5"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>150</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>4 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-4"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>63</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>3 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>15</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>2 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>6</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>1 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>20</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="author-follow-btn"><button>Follow</button></div>
-
                         </div>
-                        <div class="author-details">
-                            Ruskin Bond is an Indian author of British descent. He is considered to be an icon among
-                            Indian
-                            writers and children's authors and a top novelist. He wrote his first novel, The Room on the
-                            Roof,
-                            when he was seventeen which won John Llewellyn Rhys Memorial Prize in 1957. Since then he
-                            has
-                            written several novellas, over 500 short stories, as well as various essays and poems, all
-                            of
-                            which
-                            have established him as one of the best-loved and most admired chroniclers of contemporary
-                            India. In
-                            1992 he received the Sahitya Akademi award for English writing, for his short stories
-                            collection,
-                            "Our Trees Still Grow in Dehra", by the Sahitya Akademi, India's National Academy of Letters
-                            in
-                            India. He was awarded the Padma Shri in 1999 for contributions to children's literature. He
-                            now
-                            lives with his adopted family in Landour near Mussoorie.
-                        </div>
+                        <div class="reviews-wrapper">
+                            print('{{request.user.following.all}}')
+                            {% for review in reviews %}
+                               
+                                <hr>
+                            <div class="review-container">
 
-                    </div>
-
-                    <div>
-                        Ratings and reviews
-                        <div>
-                            What do you think
-                        </div>
-                        <div>
-                            <hr>
-                            <h2>Community Reviews</h2>
-                            <div>
-
-                                <div class="communtiy-wrapper">
-                                    <!-- Add icon library -->
-
-
-                                    <div class="rating">
+                                <div class="reviewer-profile">
+                                    <a href="{% url 'user_profile' review.user.id %}">
+                                        <img src="{{review.user.avatar.url}}" class="rounded-circle shadow-4 me-2"
+                                          style="width: 50px;" alt="Avatar" />
+                                      </a>
+                                    <a href="{% url 'user_profile' review.user.id %}">{{review.user.name}}</a>
+                                    <div class="review-count">49 reviews</div>
+                                    
+                                      
+                                    
+                                    {% if review.user != request.user %} 
+                                      
+                                    <button id="{{review.user.id}}" type="button" class="btn btn-dark" onclick="follow_user('{{review.user.id}}')">
+                                        {% if request.user in review.user.followers.all %}   
+                                            Following
+                                        {% else %} 
+                                            Follow 
+                                        {% endif %} 
+                                    
+                                    </button>
+                                    {% endif %} 
+                                </div>
+                                <div class="Review">
+                                    <div class="user-rating">
                                         <div class="rating-star">
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
@@ -419,244 +261,92 @@
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
                                         </div>
-                                        <p>131 ratins . 254 reviews</p>
+                                        <div class="user-rating-date">
+                                            {{review.created_at|date}}
+                                        </div>
                                     </div>
-                                    <hr style="border:3px solid #f1f1f1">
+                                    <div class="review-body">
+                                       {{review.review_text}}
+                                    </div>
 
-                                    <div class="row">
-                                        <div class="side">
-                                            <div>5 star</div>
+                                    <div class="user-feedback">
+                                        <div class="like">
+                                            <i class="fa-regular fa-thumbs-up"></i>
+                                            Like
                                         </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-5"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>150</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>4 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-4"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>63</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>3 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-3"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>15</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>2 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-2"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>6</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>1 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-1"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>20</div>
+                                        <div class="comment">
+                                            <i class="fa-solid fa-comment"></i>
+                                            Comment
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
-                            <div class="reviews-wrapper">
-
-                                <hr>
-                                <div class="review-container">
-
-                                    <div class="reviewer-profile">
-                                        <div class="avatar">
-
-                                        </div>
-                                        <h6>Arpita Agarwal</h6>
-                                        <div class="review-count">49 reviews</div>
-                                        <button type="button" class="btn btn-dark">Follow</button>
-                                    </div>
-                                    <div class="Review">
-                                        <div class="user-rating">
-                                            <div class="rating-star">
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star"></span>
-                                            </div>
-                                            <div class="user-rating-date">
-                                                April 21, 2023
-                                            </div>
-                                        </div>
-                                        <div class="review-body">
-                                            Such a wonderful memoir rich with Omer’s very personal experiences and life.
-                                            Definitely the type of memoir I was looking to read!
-                                        </div>
-
-                                        <div class="user-feedback">
-                                            <div class="like">
-                                                <i class="fa-regular fa-thumbs-up"></i>
-                                                Like
-                                            </div>
-                                            <div class="comment">
-                                                <i class="fa-solid fa-comment"></i>
-                                                Comment
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
 
 
-                                <hr>
-                                <div class="review-container">
+                            <script>
+                                
 
-                                    <div class="reviewer-profile">
-                                        <div class="avatar">
+                                function follow_user(user_id)
+                                {
+                                   
+                                    var follow_btn = document.getElementById(user_id)
+                                    
+                                    var is_following = (follow_btn?.innerText === 'Following')
 
-                                        </div>
-                                        <h6>Arpita Agarwal</h6>
-                                        <div class="review-count">49 reviews</div>
-                                        <button type="button" class="btn btn-dark">Follow</button>
-                                    </div>
-                                    <div class="Review">
-                                        <div class="user-rating">
-                                            <div class="rating-star">
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star"></span>
-                                            </div>
-                                            <div class="user-rating-date">
-                                                April 21, 2023
-                                            </div>
-                                        </div>
-                                        <div class="review-body">
-                                            Such a wonderful memoir rich with Omer’s very personal experiences and life.
-                                            Definitely the type of memoir I was looking to read!
-                                        </div>
+                                    var xhttp = new XMLHttpRequest()
+                                    xhttp.onreadystatechange = function(){
+                                        if (this.readyState == 4){
+                                            if(this.status == 200){
+                                                if(is_following){
+                                                    // already followed make it unfollow
+                                                    follow_btn.innerText = 'Follow'
+                                                }
+                                                else 
+                                                {
+                                                    follow_btn.innerText = "Following"
+                                                }
+                                            }
+                                            else 
+                                            {
+                                                // handle error respons
+                                            }
+                                        }
+                                    }
+                              
+                                    xhttp.open("POST", "/follow/", true);
+                                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                    xhttp.send("user_id=" + user_id)
 
-                                        <div class="user-feedback">
-                                            <div class="like">
-                                                <i class="fa-regular fa-thumbs-up"></i>
-                                                Like
-                                            </div>
-                                            <div class="comment">
-                                                <i class="fa-solid fa-comment"></i>
-                                                Comment
-                                            </div>
-                                        </div>
+                                }
 
-                                    </div>
-                                </div>
+                        
+                                
+
+                            </script>
+                            {% endfor %} 
 
 
-                                <hr>
-                                <div class="review-container">
+                            
 
-                                    <div class="reviewer-profile">
-                                        <div class="avatar">
 
-                                        </div>
-                                        <h6>Arpita Agarwal</h6>
-                                        <div class="review-count">49 reviews</div>
-                                        <button type="button" class="btn btn-dark">Follow</button>
-                                    </div>
-                                    <div class="Review">
-                                        <div class="user-rating">
-                                            <div class="rating-star">
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star"></span>
-                                            </div>
-                                            <div class="user-rating-date">
-                                                April 21, 2023
-                                            </div>
-                                        </div>
-                                        <div class="review-body">
-                                            Such a wonderful memoir rich with Omer’s very personal experiences and life.
-                                            Definitely the type of memoir I was looking to read!
-                                        </div>
-
-                                        <div class="user-feedback">
-                                            <div class="like">
-                                                <i class="fa-regular fa-thumbs-up"></i>
-                                                Like
-                                            </div>
-                                            <div class="comment">
-                                                <i class="fa-solid fa-comment"></i>
-                                                Comment
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                            
 
 
 
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <footer class="container-fluid">
-        <div class="company">
-            <h3>Company</h3>
-            <ul>
-                <li><a href="#">About us</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Terms</a></li>
-                <li><a href="#">Privacy</a></li>
-                <li><a href="#">Ad preference</a></li>
-            </ul>
-        </div>
-        <div class="work">
-            <h3>Work with us</h3>
-            <ul>
-                <li><a href="#">Authors</a></li>
-                <li><a href="#">Advertise</a></li>
-                <li><a href="#">Authors & ads blog</a></li>
-            </ul>
-        </div>
 
-        <div class="connect">
-            <h3>Connect</h3>
-            <ul>
-                <li><a href="#"><img src="./static/images/fb.png" alt="facebook logo"></a></li>
-                <li><a href="#"><img src="./static/images/in.png" alt="Linkedin logo"></a></li>
-                <li><a href="#"><img src="./static/images/twitter.png" alt="Twitter logo"></a></li>
-                <li><a href="#"><img src="./static/images/insta.png" alt="Instagram logo"></a></li>
-            </ul>
-        </div>
-    </footer>
 
-</body>
 
-</html>
+ {% endblock content %} 
+
+
+
+
+
