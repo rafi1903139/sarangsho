@@ -1,0 +1,13 @@
+{% for message in messages %}
+<div class="container-fluid p-0 toast show my-3">
+    
+  <div class="alert {{ message.tags }} toast-hdeader py-2 m-0 d-flex justify-content-between" role="alert"  >
+    <div>{{ message }}</div>
+    <button type="button" class="btn btn-close btn-sm" data-bs-dismiss="toast" aria-label="Close"></button>
+    
+  </div>
+</div>
+
+
+{% endfor %}
+

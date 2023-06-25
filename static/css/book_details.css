@@ -1,0 +1,283 @@
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial;
+        margin: 0 auto;
+
+    }
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        vertical-align: middle;
+        background-color: #04AA6D;
+    }
+
+    .book-container {
+        padding: 1em;
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 2em;
+    }
+
+
+
+
+
+    .book-cover-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 8rem;
+    }
+
+
+
+    .cover-wrapper {
+        width: 200px;
+        height: 300px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .cover-wrapper img {
+        width: 100%;
+        object-fit: cover;
+
+    }
+
+    .button-wrapper a {
+        text-decoration: none;
+        color: white;
+    }
+
+    .button-style1 {
+        margin: 1em 0em 0em 0em;
+        width: 250px;
+        text-align: center;
+        background-color: green;
+        color: white;
+        padding: .7em;
+        border-radius: 20px 0% 0% 20px;
+        cursor: pointer
+    }
+
+    .book-details-container {
+        padding-top: 1em;
+    }
+
+
+    /*
+        author
+    */
+
+    .author-profile {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem 0rem;
+    }
+
+    .author-profile-container {
+        display: grid;
+        grid-template-areas:
+            "avatar name"
+            "avatar info";
+
+    }
+
+    .author-profile .avatar {
+        grid-area: avatar;
+        margin: 0px 8px;
+    }
+
+    .author-profile .author-name {
+        grid-area: name;
+        font-weight: bold;
+    }
+
+    .author-profile .author-info {
+        grid-area: info;
+        font-size: .8rem;
+    }
+
+    .review-container {
+        margin-top: 1em;
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        gap: 1em;
+        padding: 1em;
+    }
+
+    .reviewer-profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        gap: .2em;
+    }
+
+    .user-rating {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .user-rating .user-rating-date {
+        margin: 16px 0px;
+    }
+
+    .user-feedback {
+        display: flex;
+        gap: 1em;
+    }
+
+    .user-review{
+        display: flex;
+        flex-direction: column;
+        gap: .7em;
+        align-items: center;
+    }
+
+
+
+    /*
+        community rating start
+    */
+
+    .rating-star {
+        margin: 16px 0px;
+    }
+
+    .fa {
+        font-size: 25px;
+    }
+
+    .checked {
+        color: orange;
+    }
+
+    /* Three column layout */
+    .side {
+        float: left;
+        width: 15%;
+        margin-top: 10px;
+    }
+
+    .middle {
+        float: left;
+        width: 70%;
+        margin-top: 10px;
+    }
+
+    /* Place text to the right */
+    .right {
+        text-align: right;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* The bar container */
+    .bar-container {
+        width: 100%;
+        background-color: #f1f1f1;
+        text-align: center;
+        color: white;
+    }
+
+    /* Individual bars */
+    .bar-5 {
+        width: 60%;
+        height: 18px;
+        background-color: #04AA6D;
+    }
+
+    .bar-4 {
+        width: 30%;
+        height: 18px;
+        background-color: #2196F3;
+    }
+
+    .bar-3 {
+        width: 10%;
+        height: 18px;
+        background-color: #00bcd4;
+    }
+
+    .bar-2 {
+        width: 4%;
+        height: 18px;
+        background-color: #ff9800;
+    }
+
+    .bar-1 {
+        width: 15%;
+        height: 18px;
+        background-color: #f44336;
+    }
+
+    /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+    @media (max-width: 400px) {
+
+        .side,
+        .middle {
+            width: 100%;
+        }
+
+        /* Hide the right column on small screens */
+        .right {
+            display: none;
+        }
+    }
+
+    /*
+        community rating end
+    */
+
+    /* footer start */
+
+    footer {
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 300px 300px 1fr;
+        gap: 1em;
+        background-color: #EEEEEE;
+        padding-left: 5rem !important;
+    }
+
+    footer>div {
+        padding: 1em;
+    }
+
+    footer ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    footer ul li {
+        list-style-type: none;
+        font-size: 1.3em;
+        line-height: 1.9em;
+    }
+
+    footer .connect img {
+        width: 50px;
+    }
+
+    footer .connect li {
+        float: left;
+        padding-right: 1rem;
+    }
+
+    /* footer end */
