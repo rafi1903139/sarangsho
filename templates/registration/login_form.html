@@ -1,0 +1,99 @@
+{% include 'messages.html' %}
+<form id="login_form" class="m-4">
+    {% csrf_token %}
+    <h5 class="text-center pb-1 mb-1 fw-bold">Welcome Back!</h5>
+    <p class="text-center font-weight-light text-secondary"> <small>We missed you! please enter your details.</small>
+    </p>
+    <div class="form-group pt-3">
+        <label for="exampleInputEmail1"><strong>Email</strong></label>
+        <input name="email" type="email" class="form-control mt-1 t-small" id="exampleInputEmail1"
+            aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group pt-3">
+        <label for="exampleInputPassword1" class="font-weight-bold"><strong>Password</strong></label>
+        <input name="password" type="password" class="form-control mt-1 t-small" id="exampleInputPassword1"
+            placeholder="Enter password">
+    </div>
+
+    <small>
+        <div class="d-flex justify-content-between pt-3">
+
+            <div class="form-check d-inline-block">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    <p class="t-small">Remember me</p>
+                </label>
+            </div>
+            <a href="#" class="d-inline-block t-small align-self-start">Forgot Password?</a>
+        </div>
+    </small>
+
+    <div class="form-group submit-btn-container mb-3">
+        <input type="submit" value="Login" class="btn btn-primary w-100">
+    </div>
+    <p class="text-center"><small class="font-weight-light text-secondary">Don't have an account? <a href="#">Sign
+                up</a></small></p>
+</form>
+
+<script>
+    window.addEventListener('load', () => {
+        function sendData() {
+            const XHR = new XMLHttpRequest();
+
+            // bind the FormData object with the form element
+            const FD = new FormData(form);
+
+            // // defines on response text on successfull data submission
+            // XHR.addEventListener('load', (event) => {
+                
+            //     window.location.replace("")
+            // });
+
+            // // defines what happens in case of error
+            // XHR.addEventListener('error', (event) => {
+            //     console.log("there is error")
+            //     alert("Oops! something went wrong");
+            // })
+
+            // set up request
+            XHR.open("POST", "accounts/login/")
+
+            XHR.onreadystatechange = function(){
+                if (XHR.readyState === XMLHttpRequest.DONE){
+                    if (XHR.status === 200){
+                        // handles successful login
+                        window.location.replace("")
+                    }
+                    else 
+                    {
+                        // handle errors
+                        var errorResponse = JSON.parse(XHR.responseText)
+
+                        message_container.classList.remove('d-none');
+                        message.innerHTML = errorResponse.error
+                        console.log(errorResponse.error)
+                    }
+                }
+            }
+
+            XHR.send(FD)
+        }
+
+        // get the form element
+        const form = document.getElementById("login_form")
+
+        form.addEventListener('keypress', (e)=>{
+            if (e.keyCode === 13){
+                e.preventDefault();
+                form.requestSubmit();
+            }
+        })
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            sendData();
+        })
+    })
+</script>

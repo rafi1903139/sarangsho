@@ -3,9 +3,11 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import CustomUserCreationForm 
 from .models import CustomUser
-
+from django.utils.encoding import force_str
+import html
+import json
 # function based
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -27,23 +29,29 @@ def loginPage(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+       
 
         try:
             user = CustomUser.objects.get(email=email)
         except:
-            messages.error(request, "User does not exist")
-            return render(request, "accounts/login_register.html", context)
+            error_message = "User doesn't exist"
+            return JsonResponse({'error': error_message}, status=401)
+        
+            
         
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
+            print('logged in')
             return redirect('home')
         else:
-            messages.error(request, "Invalid email or password")
-            return render(request, "accounts/login_register.html", context)
+            error_message = "Invalid email or password"
+            print("hello")
+            return JsonResponse({'error':error_message}, status=401)
+            
     
-    return render(request, "accounts/login_register.html", context)
+    return redirect('home')
 
 
 def logoutUser(request):
@@ -78,9 +86,18 @@ def usersignup(request):
             email = EmailMessage(email_subject, message, to=[to_email])
             email.send()
             return HttpResponse('We have send you an email, please confirm your email address to complete registration')
+        else:
+            # print("Invalid form data") 
+            errors = dict(form.errors.items())
+            print(errors)
+            # json_errors = json.dumps(errors)
+            # print(type(json_errors))
+
+            return JsonResponse(errors, status=401)
     else:
-            form  = CustomUserCreationForm()
-    return render(request, 'accounts/login_register.html', {'form': form})
+        form = CustomUserCreationForm()
+        html_content = str(form.as_p())
+        return HttpResponse(html_content, content_type='text/html')
 
 def activate(request, uidb64, token):
     User = get_user_model()

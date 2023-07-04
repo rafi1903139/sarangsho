@@ -3,15 +3,20 @@
 
 
 </style>
-<nav class="navbar fixed-top bg-body-tertiary navbar-light"  style="background-color: #e3f2fd;">
+<nav class="navbar fixed-top bg-body-tertiary navbar-light" style="background-color: #e3f2fd;">
   <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">
       <img src="{% static 'img/logo.png' %}" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
       <div class="logo-text">Sarangsho</div>
     </a>
-
+<!-- 
     <form method="GET" action="{% url 'home' %}">
       <input type="text" name="q" placeholder="Search books">
+    </form> -->
+
+    <form class="form-inline d-flex" method="GET" action="{% url 'home' %}">
+      <input name="q" class=" me-2 form-control mr-sm-2" type="search" placeholder="Search books" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 
     <div>
@@ -19,8 +24,7 @@
       <form class="form-inline ml-auto">
 
         <a href="{% url 'user_profile' request.user.id %}">
-          <img src="{{user.avatar.url}}" class="rounded-circle shadow-4 me-2"
-            style="width: 50px;" alt="Avatar" />
+          <img src="{{user.avatar.url}}" class="rounded-circle shadow-4 me-2" style="width: 50px;" alt="Avatar" />
         </a>
 
 
@@ -29,11 +33,69 @@
       </form>
 
       {% else %}
-      <form class="form-inline ml-auto">
-        <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}" class="btn btn-primary ml-2">
-          Sign up</a>          
-      </form>
+      <div>
+        <button id="login_btn" class="btn btn-primary">Login</button>
+        <button id="signup_btn" class="btn btn-primary">Signup</button>
+
+        <dialog id="login_dialog">
+          {% include 'registration/login_form.html' %}
+        </dialog>
+        <dialog id="signup_dialog">
+          
+          {% include 'registration/signup_form.html' %}
+        </dialog>
+      </div>
+      <script>
+
+        var message = document.querySelector('.message_body')
+        var message_container = message.parentElement.parentElement;
+        login_dialog = document.getElementById('login_dialog')
+        signup_dialog = document.getElementById('signup_dialog')
+        login_btn = document.getElementById('login_btn')
+        signup_btn = document.getElementById('signup_btn')
+
+
+
+        function close_modal(dialog, e) {
+          const dialogDimensions = dialog.getBoundingClientRect()
+          //console.log(dialogDimensions)
+          if (
+            e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom
+          ) {
+            dialog.close()
+          }
+        }
+
+
+        login_btn.addEventListener('click', () => {
+          message_container.classList.add('d-none');
+          login_dialog.showModal()
+          login_dialog.addEventListener('click', e => {
+
+
+
+
+
+
+            close_modal(login_dialog, e)
+          })
+        })
+
+        signup_btn.addEventListener('click', () => {
+
+          
+          
+          message_container.classList.add('d-none');
+          signup_dialog.showModal()
+          signup_dialog.addEventListener('click', e => {
+            close_modal(signup_dialog, e)
+          })
+        })
+
+      </script>
       {% endif %}
     </div>
 

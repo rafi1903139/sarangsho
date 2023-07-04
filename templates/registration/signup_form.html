@@ -1,0 +1,217 @@
+<style>
+  #form_input {
+    max-width: 350px;
+    padding: 1rem;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  #id_bio {
+    height: 4rem;
+
+    max-width: 275px;
+    resize: none;
+    overflow: auto;
+
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  .helptext {
+    display: none !important;
+  }
+
+  ul {
+    padding: 1rem !important;
+  }
+
+  ul li {
+    margin-bottom: .5rem;
+  }
+</style>
+
+
+{% include 'messages.html' %}
+
+<form id="signup_form" class="m-4">
+ 
+  {% csrf_token %}
+  
+  <h5 class="text-center">Create Account</h5>
+  <div id="form_input">
+
+  </div>
+  <div class="form-group submit-btn-container mb-3 mx-3">
+    <input type="submit" value="Signup" class="btn btn-primary w-100">
+  </div>
+  <p class="text-center"><small class="font-weight-light text-secondary">Already have an account? <a href="#">Sign
+        in</a></small></p>
+
+</form>
+
+<script>
+
+
+  window.addEventListener('load', () => {
+
+    message_container = signup_dialog.children[1];
+    message_body = message_container.children[0].children[0];
+
+    console.log(message_body.parentElement.classList)
+    // get the form fields using ajax request
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "accounts/signup/");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status == 200) {
+          // var response = JSON.parse(xhr.responseText)
+
+          form = document.getElementById('form_input');
+          form.innerHTML = xhr.responseText
+          // console.log(form.innerHTML)
+
+          var elements = document.querySelectorAll('[id^="id_"]')
+
+          for (element of elements) {
+            element.classList.add("px-2");
+            element.classList.add("py-1");
+          }
+
+          setPlaceholder();
+
+        }
+        else {
+          console.log("Error getting form data")
+        }
+      }
+    }
+
+    xhr.send()
+
+    // post the user data
+    function sendData() {
+      const XHR = new XMLHttpRequest();
+
+      // bind the FormData object with the form element
+      const FD = new FormData(signupForm);
+
+      // // defines on response text on successfull data submission
+      // XHR.addEventListener('load', (event) => {
+
+      //     window.location.replace("")
+      // });
+
+      // // defines what happens in case of error
+      // XHR.addEventListener('error', (event) => {
+      //     console.log("there is error")
+      //     alert("Oops! something went wrong");
+      // })
+
+      // set up request
+      XHR.open("POST", "accounts/signup/")
+
+      XHR.onreadystatechange = function () {
+        if (XHR.readyState === XMLHttpRequest.DONE) {
+          if (XHR.status === 200) {
+            // handles successful login
+            message_container.classList.remove('d-none');
+            message_body.parentElement.classList.remove('alert-danger');
+            message_body.parentElement.classList.add('alert-success');
+            message_body.innerHTML = XHR.responseText;
+            
+            setTimeout(()=>{
+              signup_dialog.close();
+              form.reset();
+            }, 5000)
+            
+
+          }
+          else {
+            // handle errors
+
+            var errorResponse = JSON.parse(XHR.responseText)
+            var totalMessage = '';
+           
+            for (error in errorResponse) {
+              for (msg of errorResponse[error]) {
+
+                var message_html = `
+            <div class="alert alert-danger toast-hdeader py-2 my-1 d-flex justify-content-between" role="alert"  >
+              <div class="message_body">
+                ${msg}
+              </div>
+            </div>
+          `
+            totalMessage += message_html;
+                
+              }
+            }
+            //var errors = XHR.responseText;
+            //console.log(errors);
+
+            //console.log(typeof(errors));
+
+            message_container.classList.remove('d-none');
+
+            message_container.innerHTML = totalMessage;
+
+          }
+        }
+      }
+
+      XHR.send(FD)
+    }
+
+    // get the form element
+    const signupForm = document.getElementById("signup_form")
+
+    signupForm.addEventListener('keypress', (e) => {
+      if (e.keyCode === 13) {
+
+        message_container.classList.add('d-none');
+        message_body.innerHTML = "";
+        e.preventDefault();
+        signupForm.scrollIntoView({behavior: 'smooth', block: 'start'});
+        signupForm.requestSubmit();
+
+        }
+    })
+
+    signupForm.addEventListener("submit", (event) => {
+      
+      message_container.classList.add('d-none');
+      message_body.innerHTML = "";
+      event.preventDefault();
+      signupForm.scrollIntoView({behavior: 'smooth', block: 'start'});
+      
+      sendData();
+    })
+
+  })
+
+  function setPlaceholder() {
+
+    var name = document.getElementById("id_name")
+    var username = document.getElementById("id_username")
+    var email = document.getElementById("id_email")
+    var bio = document.getElementById("id_bio")
+    var password = document.getElementById("id_password1")
+    var c_password = document.getElementById("id_password2")
+    var helptext = document.querySelectorAll(".helptext")
+
+
+    username.placeholder = "Enter a unique username";
+    name.placeholder = "Enter your name";
+    email.placeholder = "Enter email";
+    bio.placeholder = "Enter a short description about yourself";
+    password.placeholder = "Enter a valid password";
+    c_password.placeholder = "Enter the password again";
+  }
+</script>
