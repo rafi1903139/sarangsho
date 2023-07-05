@@ -9,7 +9,7 @@
       <img src="{% static 'img/logo.png' %}" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
       <div class="logo-text">Sarangsho</div>
     </a>
-<!-- 
+    <!-- 
     <form method="GET" action="{% url 'home' %}">
       <input type="text" name="q" placeholder="Search books">
     </form> -->
@@ -41,11 +41,14 @@
           {% include 'registration/login_form.html' %}
         </dialog>
         <dialog id="signup_dialog">
-          
+
           {% include 'registration/signup_form.html' %}
         </dialog>
       </div>
+      <script src="{% static 'js/utilities.js' %}"></script>
       <script>
+
+
 
         var message = document.querySelector('.message_body')
         var message_container = message.parentElement.parentElement;
@@ -53,21 +56,6 @@
         signup_dialog = document.getElementById('signup_dialog')
         login_btn = document.getElementById('login_btn')
         signup_btn = document.getElementById('signup_btn')
-
-
-
-        function close_modal(dialog, e) {
-          const dialogDimensions = dialog.getBoundingClientRect()
-          //console.log(dialogDimensions)
-          if (
-            e.clientX < dialogDimensions.left ||
-            e.clientX > dialogDimensions.right ||
-            e.clientY < dialogDimensions.top ||
-            e.clientY > dialogDimensions.bottom
-          ) {
-            dialog.close()
-          }
-        }
 
 
         login_btn.addEventListener('click', () => {
@@ -86,8 +74,8 @@
 
         signup_btn.addEventListener('click', () => {
 
-          
-          
+
+
           message_container.classList.add('d-none');
           signup_dialog.showModal()
           signup_dialog.addEventListener('click', e => {

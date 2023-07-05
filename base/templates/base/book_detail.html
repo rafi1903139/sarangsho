@@ -1,259 +1,167 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
- {% load static %} 
+{% load static %}
+{% block title %}
+{{book.title}}
+{% endblock title %}
 
- {% block title %} 
-    {{book.title}}
- {% endblock title %} 
-
- {% block external %} 
- <link href="{% static 'css/book_details.css' %}" rel="stylesheet" type="text/css">
- <!-- Font Awesome Icon Library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- {% endblock external %} 
-
- {% block content %} 
+{% block external %}
+<!-- default css -->
+<link rel="stylesheet" href="{% static 'css/book_details.css' %}" type="text/css">
+<!-- Font Awesome Icon Library -->
+<link rel="stylesheet" href="{% static 'library/fa/css/font-awsome.min.css'}" type="text/css">
 
 
+{% endblock external %}
 
- <div class="container">
-    <div class="book-container">
-        <div class="book-cover">
-            <div class="book-cover-container">
-                <div class="cover-wrapper">
-                    <img src="{{book.cover_image.url}}" alt="book cover">
-                </div>
-                <div class="button-wrapper">
-                    <div class="button-style1">
-                        <a href="#">Want to read</a>
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+
+
+{% block content %}
+
+
+<main>
+    <div class="container">
+        <div class="book-container">
+            <div class="book-cover">
+                <div class="book-cover-container">
+                    <div class="cover-wrapper">
+                        <img src="{{book.cover_image.url}}" alt="book cover">
                     </div>
-                </div>
-                <div class="button-wrapper">
-                    <div class="button-style1">
-                        Buy online
-                    </div>
-                </div>
-
-                <div class="button-wrapper">
-                    <div class="button-style1">
-                        Download PDF
-                    </div>
-                </div>
-
-
-                <div class="rating">
-                    <div class="rating-star">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                    </div>
-                    <h6>Rate this book</h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="book-details-container">
-            <div class="book-details">
-                <h1 class="book-name">{{book.title}}</h1>
-                <h3 class="author-name">
-                    {% for author in authors %}
-                        {{author}} 
-                    {% endfor %} 
-                </h3>
-                <div class="rating">
-                    <div class="rating-star">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                    </div>
-                    <p>131 ratins . 254 reviews</p>
-                </div>
-                <div class="book-body">
-                    {{book.description}}
-                </div>
-                <div>
-                    Genres
-                </div>
-                <div>
-                    <hr>
-                    <h3>About the author</h3>
-                    {% for author in authors %}
-                        {{author}} 
-                    {% endfor %} 
-                    <div class="author-profile">
-                        <div class="author-profile-container">
-                            <div class="avatar"></div>
-                            <div class="author-name">
-
-                            </div>
-                            <div class="author-info">593 books, 3025 followers</div>
+                    <div class="button-wrapper">
+                        <div class="button-style1">
+                            <a href="#">Want to read</a>
                         </div>
-                        <div class="author-follow-btn"><button>Follow</button></div>
-
                     </div>
-                    <div class="author-details">
-                        Ruskin Bond is an Indian author of British descent. He is considered to be an icon among
-                        Indian
-                        writers and children's authors and a top novelist. He wrote his first novel, The Room on the
-                        Roof,
-                        when he was seventeen which won John Llewellyn Rhys Memorial Prize in 1957. Since then he
-                        has
-                        written several novellas, over 500 short stories, as well as various essays and poems, all
-                        of
-                        which
-                        have established him as one of the best-loved and most admired chroniclers of contemporary
-                        India. In
-                        1992 he received the Sahitya Akademi award for English writing, for his short stories
-                        collection,
-                        "Our Trees Still Grow in Dehra", by the Sahitya Akademi, India's National Academy of Letters
-                        in
-                        India. He was awarded the Padma Shri in 1999 for contributions to children's literature. He
-                        now
-                        lives with his adopted family in Landour near Mussoorie.
+                    <div class="button-wrapper">
+                        <div class="button-style1">
+                            Buy online
+                        </div>
                     </div>
 
-                </div>
+                    <div class="button-wrapper">
+                        <div class="button-style1">
+                            Download PDF
+                        </div>
+                    </div>
 
-                <div>
-                    <hr>
-                   <h2> Ratings and reviews</h2>
-                   
-                   <div class="user-review">
-                    <img width="120px" src="{% static 'img/read.png' %}" alt="book reading icon">
-                    <h3>
-                        What do you think
-                    </h3>
-                    <div class="rating&reveiw d-flex align-items-center">
-                        <div class="rating-star me-4">
+
+                    <div class="rating">
+                        <div class="rating-star">
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star checked"></span>
                             <span class="fa fa-star"></span>
-                            <h6>Rate this book</h6>
                         </div>
-                        <a class="btn btn-dark" href="{% url 'book_review' book.id %}">Write a review</a>
+                        <h6>Rate this book</h6>
                     </div>
+                </div>
+            </div>
 
-                   </div>
-                    <hr>
+            <div class="book-details-container">
+                <div class="book-details">
+                    <h1 class="book-name">{{book.title}}</h1>
+                    <h3 class="author-name">
+                        {% for author in authors %}
+                        {{author}}
+                        {% endfor %}
+                    </h3>
+                    <div class="rating">
+                        <div class="rating-star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                        <p>131 ratins . 254 reviews</p>
+                    </div>
+                    <div class="book-body">
+                        {{book.description}}
+                    </div>
                     <div>
-                        <h3>Followings</h3>
+                        Genres
                     </div>
                     <div>
                         <hr>
-                        <h2>Community Reviews</h2>
-                        <div>
+                        <h3>About the author</h3>
+                        {% for author in authors %}
+                        {{author}}
+                        {% endfor %}
+                        <div class="author-profile">
+                            <div class="author-profile-container">
+                                <div class="avatar"></div>
+                                <div class="author-name">
 
-                            <div class="communtiy-wrapper">
-                               
-
-                                <div class="rating">
-                                    <div class="rating-star">
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star"></span>
-                                    </div>
-                                    <p>131 ratins . 254 reviews</p>
                                 </div>
-                                <hr style="border:3px solid #f1f1f1">
-
-                                <div class="row">
-                                    <div class="side">
-                                        <div>5 star</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-5"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div>150</div>
-                                    </div>
-                                    <div class="side">
-                                        <div>4 star</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-4"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div>63</div>
-                                    </div>
-                                    <div class="side">
-                                        <div>3 star</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-3"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div>15</div>
-                                    </div>
-                                    <div class="side">
-                                        <div>2 star</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div>6</div>
-                                    </div>
-                                    <div class="side">
-                                        <div>1 star</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-1"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div>20</div>
-                                    </div>
-                                </div>
+                                <div class="author-info">593 books, 3025 followers</div>
                             </div>
-                        </div>
-                        <div class="reviews-wrapper">
-                            print('{{request.user.following.all}}')
-                            {% for review in reviews %}
-                               
-                                <hr>
-                            <div class="review-container">
+                            <div class="author-follow-btn"><button>Follow</button></div>
 
-                                <div class="reviewer-profile">
-                                    <a href="{% url 'user_profile' review.user.id %}">
-                                        <img src="{{review.user.avatar.url}}" class="rounded-circle shadow-4 me-2"
-                                          style="width: 50px;" alt="Avatar" />
-                                      </a>
-                                    <a href="{% url 'user_profile' review.user.id %}">{{review.user.name}}</a>
-                                    <div class="review-count">49 reviews</div>
-                                    
-                                      
-                                    
-                                    {% if review.user != request.user %} 
-                                      
-                                    <button id="{{review.user.id}}" type="button" class="btn btn-dark" onclick="follow_user('{{review.user.id}}')">
-                                        {% if request.user in review.user.followers.all %}   
-                                            Following
-                                        {% else %} 
-                                            Follow 
-                                        {% endif %} 
-                                    
-                                    </button>
-                                    {% endif %} 
+                        </div>
+                        <div class="author-details">
+                            Ruskin Bond is an Indian author of British descent. He is considered to be an icon among
+                            Indian
+                            writers and children's authors and a top novelist. He wrote his first novel, The Room on the
+                            Roof,
+                            when he was seventeen which won John Llewellyn Rhys Memorial Prize in 1957. Since then he
+                            has
+                            written several novellas, over 500 short stories, as well as various essays and poems, all
+                            of
+                            which
+                            have established him as one of the best-loved and most admired chroniclers of contemporary
+                            India. In
+                            1992 he received the Sahitya Akademi award for English writing, for his short stories
+                            collection,
+                            "Our Trees Still Grow in Dehra", by the Sahitya Akademi, India's National Academy of Letters
+                            in
+                            India. He was awarded the Padma Shri in 1999 for contributions to children's literature. He
+                            now
+                            lives with his adopted family in Landour near Mussoorie.
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <hr>
+                        <h2> Ratings and reviews</h2>
+
+                        <div class="user-review">
+                            <img width="120px" src="{% static 'img/read.png' %}" alt="book reading icon">
+                            <h3>
+                                What do you think
+                            </h3>
+                            <div class="rating&reveiw d-flex align-items-center">
+                                <div class="rating-star me-4">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <h6>Rate this book</h6>
                                 </div>
-                                <div class="Review">
-                                    <div class="user-rating">
+
+                                <a class="btn btn-dark" href="{% url 'book_review' book.id %}">Write a review</a>
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div>
+                            <h3>Followings</h3>
+                        </div>
+                        <div>
+                            <hr>
+                            <h2>Community Reviews</h2>
+                            <div>
+
+                                <div class="communtiy-wrapper">
+
+
+                                    <div class="rating">
                                         <div class="rating-star">
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
@@ -261,92 +169,190 @@
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
                                         </div>
-                                        <div class="user-rating-date">
-                                            {{review.created_at|date}}
-                                        </div>
+                                        <p>131 ratins . 254 reviews</p>
                                     </div>
-                                    <div class="review-body">
-                                       {{review.review_text}}
-                                    </div>
+                                    <hr style="border:3px solid #f1f1f1">
 
-                                    <div class="user-feedback">
-                                        <div class="like">
-                                            <i class="fa-regular fa-thumbs-up"></i>
-                                            Like
+                                    <div class="row">
+                                        <div class="side">
+                                            <div>5 star</div>
                                         </div>
-                                        <div class="comment">
-                                            <i class="fa-solid fa-comment"></i>
-                                            Comment
+                                        <div class="middle">
+                                            <div class="bar-container">
+                                                <div class="bar-5"></div>
+                                            </div>
+                                        </div>
+                                        <div class="side right">
+                                            <div>150</div>
+                                        </div>
+                                        <div class="side">
+                                            <div>4 star</div>
+                                        </div>
+                                        <div class="middle">
+                                            <div class="bar-container">
+                                                <div class="bar-4"></div>
+                                            </div>
+                                        </div>
+                                        <div class="side right">
+                                            <div>63</div>
+                                        </div>
+                                        <div class="side">
+                                            <div>3 star</div>
+                                        </div>
+                                        <div class="middle">
+                                            <div class="bar-container">
+                                                <div class="bar-3"></div>
+                                            </div>
+                                        </div>
+                                        <div class="side right">
+                                            <div>15</div>
+                                        </div>
+                                        <div class="side">
+                                            <div>2 star</div>
+                                        </div>
+                                        <div class="middle">
+                                            <div class="bar-container">
+                                                <div class="bar-2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="side right">
+                                            <div>6</div>
+                                        </div>
+                                        <div class="side">
+                                            <div>1 star</div>
+                                        </div>
+                                        <div class="middle">
+                                            <div class="bar-container">
+                                                <div class="bar-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="side right">
+                                            <div>20</div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
+                            <div class="reviews-wrapper">
+
+                                {% for review in reviews %}
+
+                                <hr>
+                                <div class="review-container">
+
+                                    <div class="reviewer-profile">
+                                        <a href="{% url 'user_profile' review.user.id %}">
+                                            <img src="{{review.user.avatar.url}}" class="rounded-circle shadow-4 me-2"
+                                                style="width: 50px;" alt="Avatar" />
+                                        </a>
+                                        <a href="{% url 'user_profile' review.user.id %}">{{review.user.name}}</a>
+                                        <div class="review-count">49 reviews</div>
 
 
-                            <script>
-                                
 
-                                function follow_user(user_id)
-                                {
-                                   
-                                    var follow_btn = document.getElementById(user_id)
-                                    
-                                    var is_following = (follow_btn?.innerText === 'Following')
+                                        {% if review.user != request.user %}
 
-                                    var xhttp = new XMLHttpRequest()
-                                    xhttp.onreadystatechange = function(){
-                                        if (this.readyState == 4){
-                                            if(this.status == 200){
-                                                if(is_following){
-                                                    // already followed make it unfollow
-                                                    follow_btn.innerText = 'Follow'
+                                        <button id="{{review.user.id}}" type="button" class="btn btn-dark"
+                                            onclick="follow_user('{{review.user.id}}')">
+                                            {% if request.user in review.user.followers.all %}
+                                            Following
+                                            {% else %}
+                                            Follow
+                                            {% endif %}
+
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                    <div class="Review">
+                                        <div class="user-rating">
+                                            <div class="rating-star">
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                            </div>
+                                            <div class="user-rating-date">
+                                                {{review.created_at|date}}
+                                            </div>
+                                        </div>
+                                        <div class="review-body">
+                                            {{review.review_text}}
+                                        </div>
+
+                                        <div class="user-feedback">
+                                            <div class="like">
+                                                <i class="fa-regular fa-thumbs-up"></i>
+                                                Like
+                                            </div>
+                                            <div class="comment">
+                                                <i class="fa-solid fa-comment"></i>
+                                                Comment
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <script>
+
+
+                                    function follow_user(user_id) {
+
+                                        var follow_btn = document.getElementById(user_id)
+
+                                        var is_following = (follow_btn?.innerText === 'Following')
+
+                                        var xhttp = new XMLHttpRequest()
+                                        xhttp.onreadystatechange = function () {
+                                            if (this.readyState == 4) {
+                                                if (this.status == 200) {
+                                                    if (is_following) {
+                                                        // already followed make it unfollow
+                                                        follow_btn.innerText = 'Follow'
+                                                    }
+                                                    else {
+                                                        follow_btn.innerText = "Following"
+                                                    }
                                                 }
-                                                else 
-                                                {
-                                                    follow_btn.innerText = "Following"
+                                                else {
+                                                    // handle error respons
                                                 }
-                                            }
-                                            else 
-                                            {
-                                                // handle error respons
                                             }
                                         }
+
+                                        xhttp.open("POST", "/follow/", true);
+                                        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                        xhttp.send("user_id=" + user_id)
+
                                     }
-                              
-                                    xhttp.open("POST", "/follow/", true);
-                                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                                    xhttp.send("user_id=" + user_id)
-
-                                }
-
-                        
-                                
-
-                            </script>
-                            {% endfor %} 
-
-
-                            
-
-
-                            
 
 
 
+
+                                </script>
+                                {% endfor %}
+
+
+
+
+
+
+
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
+</main>
+{% endblock content %}
 
- {% endblock content %} 
-
-
-
-
-
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock footer %}
