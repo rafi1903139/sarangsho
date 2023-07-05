@@ -1,24 +1,73 @@
-{% extends 'base.html' %} 
-{% load static %}
-
-{% block title %} 
-Book Review 
-{% endblock title %} 
-
-{% block content %} 
-
-<form action="" method="POST">
+<form method="POST" id="review_form">
   {% csrf_token %}
-    <div>
-      <label for="review">What did you think?</label><br>
-      <textarea name="review" width="200px" height="500px"></textarea>
-    </div>
+  <div>
+    <label for="review">What did you think?</label><br>
+    <textarea name="review" width="200px" height="500px"></textarea>
+  </div>
 
-    <div class="form__action">
-        <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
-        <button class="btn btn--main" type="submit">Submit</button>
-      </div>
+  <div class="form__action">
+    <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+    <button class="btn btn--main" type="submit">Submit</button>
+  </div>
+
+  <input type="hidden" id="book_id" value="{{book.id}}">
 </form>
 
+<script>
 
-{% endblock content %} 
+  window.addEventListener('load', () => {
+    const book_id = document.getElementById('book_id').value;
+    
+
+    function sendData() {
+
+      const xhr = new XMLHttpRequest();
+
+      const fd = new FormData(form);
+
+      
+
+      xhr.open("POST", `/review/new/${book_id}`);
+
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // handle successful review
+            console.log("Review submitted")
+            window.location.replace(`/books/${book_id}`);
+
+          }
+          else {
+            console.log("Sumthing is wrong while submitting review");
+          }
+        }
+      }
+
+      xhr.send(fd);
+    }
+
+    // get the form element
+    const form = document.getElementById("review_form");
+
+    form.addEventListener('keypress', (e) => {
+      if (e.keyCode == 13) {
+        // enter is pressed
+        e.preventDefault()
+        form.requestSubmit();
+      }
+    })
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      sendData();
+    })
+
+  }
+  )
+
+
+
+
+
+</script>

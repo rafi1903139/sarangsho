@@ -62,11 +62,11 @@
     message_container = signup_dialog.children[1];
     message_body = message_container.children[0].children[0];
 
-    console.log(message_body.parentElement.classList)
+    //console.log(message_body.parentElement.classList)
     // get the form fields using ajax request
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "accounts/signup/");
+    xhr.open("GET", "/accounts/signup/");
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
