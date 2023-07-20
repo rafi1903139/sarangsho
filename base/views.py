@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
-from .models import Genre, Book, Review
+from .models import Genre, Book, Review, ReadingStatus, UserProfile
 from django.db.models import Q 
 from accounts.models import CustomUser
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
+import json 
+
+
 
 # Create your views here.
 
@@ -49,9 +53,15 @@ def book_details(request, pk):
     authors = book.authors.all()
     reviews = Review.objects.filter(book__id__contains=book.id)
 
+    try:
+        user_status = ReadingStatus.objects.get(book=book, user=request.user);
+    except ObjectDoesNotExist:
+        user_status = None
+    
+    
     followers = request.user.following.all() if request.user.id != None else []
  
-    context = {'book': book, 'authors': authors, 'reviews': reviews, 'followers': followers}
+    context = {'book': book, 'authors': authors, 'reviews': reviews, 'followers': followers, 'user_status': user_status}
 
     return render(request, 'base/book_detail.html', context)
 
@@ -96,5 +106,29 @@ def follow_view(request):
         print('follow user')
         user.followers.add(request.user)
 
+    return HttpResponse(status=200)
+
+def add_to_read(request, user_id, book_id):
+    
+    if request.method == 'POST':
+        # add book to the user shelf
+        user_status = json.loads(request.body);
+        print(user_status['status'])
+
+    try:
+        user_reading_status = ReadingStatus.objects.get(book=Book.objects.get(id=book_id), user=request.user);
+        user_reading_status.status = user_status['status']
+        user_reading_status.save()
+    
+    except ObjectDoesNotExist:
+        # create Reading status object for the user if not exist
+        status_id = ReadingStatus.objects.create(
+            user = CustomUser.objects.get(id=user_id),
+            book = Book.objects.get(id=book_id),
+            status = user_status['status']
+        )
+        print(status_id)
+        return HttpResponse(status=200)
+    
     return HttpResponse(status=200)
     

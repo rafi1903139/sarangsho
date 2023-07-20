@@ -21,6 +21,7 @@ class Book(models.Model):
     description = models.TextField() 
     publication_date = models.DateField() 
     cover_image = models.ImageField(upload_to='book_cover/')
+    total_page = models.PositiveIntegerField()
 
     def __str__(self):
         return self.title 
@@ -33,4 +34,19 @@ class Review(models.Model):
 
     def __str__(self):
         return self.review_text[0: 50]
+    
+
+class ReadingStatus(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20)
+    progress = models.PositiveIntegerField(default = 0)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    reading_books = models.ManyToManyField(ReadingStatus, related_name='reading_users')
+    to_read_books = models.ManyToManyField(ReadingStatus, related_name='to_read_users')
+    finished_books = models.ManyToManyField(ReadingStatus, related_name='finished_users')
+
 

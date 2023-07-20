@@ -66,8 +66,22 @@
         background-color: green;
         color: white;
         padding: .7em;
-        border-radius: 20px 0% 0% 20px;
+        border-radius: 28px;
         cursor: pointer
+    }
+
+    .active-button-style {
+        margin: 1em 0em 0em 0em;
+        width: 250px;
+        text-align: center;
+        color: white;
+        padding: .7em;
+        border-radius: 28px;
+
+        cursor: pointer;
+        border: 2px solid gray;
+        color: black;
+        
     }
 
     .book-details-container {
@@ -281,3 +295,5 @@
     }
 
     /* footer end */
+
+
