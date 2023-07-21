@@ -112,7 +112,7 @@ def add_to_read(request, user_id, book_id):
     
     if request.method == 'POST':
         # add book to the user shelf
-        user_status = json.loads(request.body);
+        user_status = json.loads(request.body)
         print(user_status['status'])
 
     try:
@@ -132,3 +132,11 @@ def add_to_read(request, user_id, book_id):
     
     return HttpResponse(status=200)
     
+@csrf_exempt
+def add_rating(request, book_id, user_id):
+    
+    if request.method == 'POST':
+        user_rating = json.loads(request.body)
+        print(user_rating['rating'])
+
+        return HttpResponse(status=200)

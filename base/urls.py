@@ -9,4 +9,5 @@ urlpatterns = [
     path("review/new/<str:pk>", views.book_review, name="book_review"),
     path("follow/", views.follow_view, name='follow'),
     path("toread/<str:book_id>/<str:user_id>", views.add_to_read, name="to_read"),
+    path("addrating/<str:book_id>/<str:user_id>", views.add_rating, name="add_rating")
 ]

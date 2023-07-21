@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "six",
     "corsheaders",
+    "fontawesomefree",
     # local apps
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
