@@ -1,0 +1,42 @@
+<!--
+    Shows all the reviews of the users that the user is currently following
+-->
+
+{% for activity in activities %}
+<div class="my-4 reviews rounded ">
+<div class="review-update d-flex mb-2 mt-2">
+    <div class="avatar">
+        <a href="{% url 'user_profile' activity.user.id %}"><img src="{{activity.user.avatar.url}}" class="rounded-circle" alt="reviewer-profile"></a>
+    </div>
+    <div class="mt-2">
+        <p><a href="{% url 'user_profile' activity.user.id %}">{{activity.user}}</a> reviewd <a href="{% url 'book_detail' activity.book.id %}">{{activity.book.title}}</a> </p>
+        <div class="rating"></div>
+    </div>
+</div>
+<div class="review-body m-3">
+    {{activity.review_text}}
+</div>
+<div class="review-book d-flex m-3 p-2 border border-dark">
+    <div class="book-cover ">
+        <a href="{% url 'book_detail' activity.book.id %}"><img class="shadow" src="{{activity.book.cover_image.url}}" alt="book-cover"></a>
+    </div>
+    <div class="book-details">
+        <h5><a href="{% url 'book_detail' activity.book.id %}">{{activity.book.title}}</a></h5>
+        <p>by 
+            <!-- can cause error for multiple authors -->
+           {% for author in activity.book.authors.all %}
+           {{author}}
+           {% endfor %} 
+        </p>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur alias quod quae non
+            facere repellendus error ea iste placeat mollitia?
+        </p>
+    </div>
+</div>
+<!-- <div class="mx-3">
+    <a href="#">Like . </a>
+    <a href="#">Comment</a>
+</div> -->
+</div>
+{% endfor %}

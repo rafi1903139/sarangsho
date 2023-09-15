@@ -1,17 +1,88 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %} 
-    Search found
-{% endblock title %} 
+{% block title %}
+Search found
+{% endblock title %}
 
-{% block content %} 
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+
+
+{% block content %}
+<style>
+    .book-list-container {
+
+        margin-top: 5rem;
+    }
+
+    .block {
+        width: 120px;
+        height: 170px;
+        overflow: hidden !important;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        /* background-color: #A0C3D2; */
+    }
+
+    /* Add a zoom effect on image hover */
+    .image-container {
+        background-color: black;
+        overflow: hidden;
+        position: relative;
+        width: 120px !important;
+    }
+
+    .image-container{
+        transition: transform 0.3s ease;
+    }
+
+    .image-container:hover{
+        cursor: pointer;
+        transform: scale(1.1);
+        /* Increase the scale value for stronger zoom effect */
+    }
+
+    .image-container img {
+
+        width: 120px;
+        height: 170px;
+        object-fit: cover;
+    }
+</style>
+<div class="container book-list-container">
+
+    <!-- display books by specific genre -->
+    {% if isListByCategory %}
     <h1>{{genre.name}}</h1>
+    <div class="container">
+        <div class="row">
+    
+            {% for book in books %}
+            <div class="col-md-4">
+                <div class="image-container block">
+                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                </div>
+            </div>
+    
+            {% endfor %}
+    
+        </div>
+    </div>
+    {% else %}
+    <!-- display book based on user search -->
+    <h1>Search Found</h1>
     <ul>
         {% for book in books %}
         <li><a href="{% url 'book_detail' book.id %}">{{book}}</a></li>
         {% endfor %}
     </ul>
 
-{% endblock content %} 
+    {% endif %}
+</div>
 
+
+{% endblock content %}

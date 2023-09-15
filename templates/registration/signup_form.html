@@ -59,9 +59,12 @@
 
   window.addEventListener('load', () => {
 
+    // select the message element in the signup form
     message_container = signup_dialog.children[1];
     message_body = message_container.children[0].children[0];
 
+
+    
     //console.log(message_body.parentElement.classList)
     // get the form fields using ajax request
 
@@ -136,7 +139,8 @@
           else {
             // handle errors
 
-            var errorResponse = JSON.parse(XHR.responseText)
+            var errorResponse = JSON.parse(XHR.responseText);
+            console.log(errorResponse.error);
             var totalMessage = '';
            
             for (error in errorResponse) {

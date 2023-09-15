@@ -1,8 +1,5 @@
 {% load static %}
-<style>
 
-
-</style>
 <nav class="navbar fixed-top bg-body-tertiary navbar-light" style="background-color: #e3f2fd;">
   <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">
@@ -50,8 +47,7 @@
 
 
 
-        var message = document.querySelector('.message_body')
-        var message_container = message.parentElement.parentElement;
+
         login_dialog = document.getElementById('login_dialog')
         signup_dialog = document.getElementById('signup_dialog')
         login_btn = document.getElementById('login_btn')
@@ -59,25 +55,22 @@
 
 
         login_btn.addEventListener('click', () => {
-          message_container.classList.add('d-none');
+          
+          // show the login page modal
           login_dialog.showModal()
+
+          // remove the modal from view when clicking outside modal
           login_dialog.addEventListener('click', e => {
-
-
-
-
-
-
             close_modal(login_dialog, e)
           })
         })
 
         signup_btn.addEventListener('click', () => {
 
-
-
-          message_container.classList.add('d-none');
+          // show the signup page modal
           signup_dialog.showModal()
+
+          // remove the modal from the view when clicking outside
           signup_dialog.addEventListener('click', e => {
             close_modal(signup_dialog, e)
           })

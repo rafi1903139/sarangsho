@@ -30,3 +30,35 @@ function close_modal(dialog, e) {
     }
     return cookieValue;
 }
+
+function follow_user(user_id) {
+
+  var follow_btn = document.getElementById(user_id)
+
+  var is_following = (follow_btn?.innerText === 'Following')
+
+  var xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+          if (this.status == 200) {
+              if (is_following) {
+                  // already followed make it unfollow
+                  follow_btn.innerText = 'Follow'
+              }
+              else {
+                  follow_btn.innerText = "Following"
+              }
+              // reload the page
+              location.reload();
+          }
+          else {
+              // handle error respons
+          }
+      }
+  }
+
+  xhttp.open("POST", "/follow/", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("user_id=" + user_id)
+
+}

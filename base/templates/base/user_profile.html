@@ -4,6 +4,10 @@
 Profile
 {% endblock title %}
 
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
 {% block content %}
 
 <style>
@@ -18,7 +22,7 @@ Profile
     source
     https://mdbootstrap.com/docs/standard/extended/avatar/
  -->
-
+<main>
 <div class="container">
     <div>
         <section>
@@ -34,7 +38,7 @@ Profile
                                             style="width: 180px; border-radius: 10px;" />
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-1">{{user.name}}</h5>
+                                        <h5 class="mb-1">{{user}}</h5>
                                         <p class="mb-2 pb-1" style="color: #2b2a2a;">
                                             {{user.bio}}
                                         </p>
@@ -63,9 +67,17 @@ Profile
                                             <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">
                                                 Chat
                                             </button>
-                                            <button type="button" class="btn btn-primary flex-grow-1">
-                                                Follow
-                                            </button>
+                                            {% if user != request.user %}
+                                            <button id="{{user.id}}" type="button" class="btn btn-outline-primary me-1 flex-grow-1"
+                                            onclick="follow_user('{{user.id}}')">
+                                            {% if request.user in user.followers.all %}
+                                            Following
+                                            {% else %}
+                                            Follow
+                                            {% endif %}
+
+                                        </button>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -77,11 +89,11 @@ Profile
         </section>
 
         <div>
-            Petriks bookshelves
+            {{user}}'s bookshelves
             <hr>
         </div>
         <div>
-            Petriks recent updates
+            {{user}}'s recent updates
             <hr>
         </div>
     
@@ -89,7 +101,7 @@ Profile
     <div class="py-5">
 
         <div>
-            People {{user.name}} is following
+            People {{user}} is following
             <hr>
         </div>
 
@@ -98,6 +110,6 @@ Profile
 
 
 
-
+</main>
 
 {% endblock content %}
