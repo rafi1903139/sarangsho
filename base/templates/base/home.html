@@ -3,76 +3,17 @@
 
 {% block title %} Home {% endblock title %}
 
+{% block external %}
+
+<link href="{% static 'css/home_style.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock external %}
+
 {% block navbar %}
 {% include 'navbar.html' %}
 {% endblock navbar %}
 
 {% block content %}
-
-<style>
-    .block {
-        width: 120px;
-        height: 170px;
-        overflow: hidden !important;
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        /* background-color: #A0C3D2; */
-    }
-    
-
-    .small-cover {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-
-    }
-
-
-    .wrapper {
-        display: grid;
-        grid-template-columns: 3fr 7fr 2fr;
-        gap: 1em;
-    }
-
-    .avatar {
-        margin-right: .5rem;
-    }
-
-    .avatar img {
-
-        object-fit: cover;
-        height: 50px;
-        width: 50px;
-    }
-
-    .reviews {
-        background-color: #e9f0f3bf;
-        padding: 1rem;
-        
-    }
-
-    .book-cover {
-        padding: 1em;
-        margin-right: .8em;
-
-    }
-
-    .book-cover img {
-
-        width: 120px;
-        height: 170px;
-        object-fit: cover;
-    }
-
-    .book-details {
-        padding-top: 1em;
-    }
-
-    .fs-8{
-        font-size: .8rem;
-    }
-</style>
 
 <main>
     {% if user.is_authenticated %}
@@ -90,18 +31,19 @@
                 </div>
 
                 <!-- display the reivews-->
-                <div class="review-container mb-3">                  
+                <div class="review-container mb-3">
                     {% include 'base/review_container.html' %}
                 </div>
 
-                <div>
+                <div class="my-4">
                     <h6>RECOMMENDATIONS</h6>
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="..." alt="Card image cap">
+                    <div class="card my-4" style="width: 18rem;">
+                        <img class="card-img-top py-2" src="..." alt="Card image cap">
                         <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
 
@@ -201,9 +143,8 @@
                         <input type="text" placeholder="Title/ Author">
                     </form>
                     <div class="category">
-
                         {% for genre in genres %}
-                        <a href="#">{{genre.name}}</a>
+                        <a href="{% url 'book_list' genre.id %}">{{genre.name}}</a>
                         {% endfor %}
                     </div>
                 </div>

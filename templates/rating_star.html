@@ -1,87 +1,92 @@
-{% load static %} 
+{% load static %}
 <style>
-.star {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: url("{% static 'img/star-regular.svg' %}") no-repeat;
-  cursor: pointer;
-}
+  .star {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("{% static 'img/star-regular.svg' %}") no-repeat;
+    cursor: pointer;
+  }
 
-.star.highlight {
-  background: url("{% static 'img/star-solid.svg' %}") no-repeat;
-}
-
+  .star.highlight {
+    background: url("{% static 'img/star-solid.svg' %}") no-repeat;
+  }
 </style>
 
 <div id="star-rating">
-    <span class="star" data-rating="1"></span>
-    <span class="star" data-rating="2"></span>
-    <span class="star" data-rating="3"></span>
-    <span class="star" data-rating="4"></span>
-    <span class="star" data-rating="5"></span>
-  </div>
-  
+  <span class="star" data-rating="1"></span>
+  <span class="star" data-rating="2"></span>
+  <span class="star" data-rating="3"></span>
+  <span class="star" data-rating="4"></span>
+  <span class="star" data-rating="5"></span>
+</div>
+
 
 <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-  const stars = document.querySelectorAll('.star');
+  document.addEventListener('DOMContentLoaded', function () {
+    const stars = document.querySelectorAll('.star');
 
-  stars.forEach(function(star) {
-    star.addEventListener('mouseover', function() {
-      highlightStars(this.dataset.rating);
-    });
 
-    star.addEventListener('mouseout', function() {
-      resetStars();
-    });
+    // stars.forEach(function (star) {
+    //   star.addEventListener('mouseover', function () {
+    //     highlightStars(this.dataset.rating);
+    //   });
 
-    star.addEventListener('click', function() {
-      const rating = this.dataset.rating;
-      sendRatingToServer(rating);
-    });
-  });
+    //   star.addEventListener('mouseout', function () {
+    //     resetStars();
+    //   });
 
-  function highlightStars(rating) {
-    stars.forEach(function(star) {
-      if (star.dataset.rating <= rating) {
-        star.classList.add('highlight');
-      } else {
-        star.classList.remove('highlight');
-      }
-    });
-  }
+    // //   star.addEventListener('click', function () {
+    // //     const rating = this.dataset.rating;
+    // //     console.log(rating);
+    // //     console.log(book_id);
+    // //     console.log(user_id);
+    // //     sendRatingToServer(rating, book_id, user_id);
+    // //   });
+    // });
 
-  function resetStars() {
-    stars.forEach(function(star) {
-      star.classList.remove('highlight');
-    });
-  }
+  //   function highlightStars(rating) {
+  //     stars.forEach(function (star) {
+  //       if (star.dataset.rating <= rating) {
+  //         star.classList.add('highlight');
+  //       } else {
+  //         star.classList.remove('highlight');
+  //       }
+  //     });
+  //   }
 
-  function sendRatingToServer(rating) {
-    // Perform AJAX call to send rating to the server
-    // Replace 'your-url' with the actual URL to send the data
-    // Example using fetch API:
-    fetch('/addrating/1/1', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ rating: rating }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      // Handle the response from the server (if needed)
-      console.log("Show alert message of success")
-    })
-    .catch(error => {
-      // Handle errors
-      console.log(error)
-    });
-  }
-});
+  //   function resetStars() {
+  //     stars.forEach(function (star) {
+  //       star.classList.remove('highlight');
+  //     });
+  //   }
 
-    
+  //   function sendRatingToServer(rating, book_id, user_id) {
+  //     // Perform AJAX call to send rating to the server
+  //     // Replace 'your-url' with the actual URL to send the data
+  //     // Example using fetch API:
+  //     fetch(`/addrating/${book_id}/${user_id}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         rating: rating,
+  //       }),
+  //     })
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         // Handle the response from the server (if needed)
+  //         console.log("Show alert message of success")
+  //       })
+  //       .catch(error => {
+  //         // Handle errors
+  //         console.log("error")
+  //       });
+  //   }
+   });
+
+
 
 </script>

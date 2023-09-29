@@ -36,11 +36,11 @@ Search found
         width: 120px !important;
     }
 
-    .image-container{
+    .image-container {
         transition: transform 0.3s ease;
     }
 
-    .image-container:hover{
+    .image-container:hover {
         cursor: pointer;
         transform: scale(1.1);
         /* Increase the scale value for stronger zoom effect */
@@ -60,26 +60,51 @@ Search found
     <h1>{{genre.name}}</h1>
     <div class="container">
         <div class="row">
-    
+
             {% for book in books %}
-            <div class="col-md-4">
-                <div class="image-container block">
-                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
-                </div>
-            </div>
-    
+            <div class="m-4 col-1">
+            <a href="{% url 'book_detail' book.id %}">
+                
+                    <div class="image-container block">
+                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                    </div>
+                    <div class="book-title-block p-2">
+                        
+                        <h6 class="text-center"> {{book}} </h6>
+                        
+                    </div>
+                
+            </a>
+        </div>
+
             {% endfor %}
-    
+
         </div>
     </div>
     {% else %}
     <!-- display book based on user search -->
     <h1>Search Found</h1>
-    <ul>
+    
+        <div class="row">
         {% for book in books %}
-        <li><a href="{% url 'book_detail' book.id %}">{{book}}</a></li>
+        <div class="m-4 col-1">
+            <a href="{% url 'book_detail' book.id %}">
+                
+                    <div class="image-container block">
+                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                    </div>
+                    <div class="book-title-block p-2">
+                        
+                          <h6 class="text-center"> {{book}} </h6>
+                        
+                    </div>
+                
+            </a>
+        </div>
+
         {% endfor %}
-    </ul>
+    </div>
+    
 
     {% endif %}
 </div>

@@ -70,3 +70,5 @@ class Rating(models.Model):
         super().save(*args, **kwargs)
         self.book.save()  # Save the book to trigger the average_rating update
 
+    def __str__(self):
+        return self.book.title 

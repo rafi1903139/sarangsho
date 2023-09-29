@@ -1,33 +1,40 @@
 {% load static %}
 <div class="my-4">
     <h6>CURRENTLY READING</h6>
+    {% if current_reading_book != None %}
     <div class="card-container">
+        <a href="{% url 'book_detail' current_reading_book.id %}">
         <div class="card d-flex flex-row">
-            <div class="block m-2">
-                <img class="card-img-top small-cover"
-                    src="{% static 'img/book_cover/book_cover.jpg' %}" alt="Card image cap">
+            <div class="block m-2 img-container">
+                <img class="card-img-top small-cover w-100"
+                    src="{{current_reading_book.cover_image.url}}" alt="Card image cap">
 
             </div>
-            <div class="card-body">
-                <h6 class="card-title">Book Name</h6>
-                <p class="card-text">Author name</p>
-                <a href="#" class="btn btn-outline-dark fs-8 p-2">Update progress</a>
+            <div class="card-body card-reading-body">
+                <h6 class="card-title">{{current_reading_book}}</h6>
+                <p class="card-text">{{current_reading_book.author}}</p>
+                <!-- <a href="#" class="btn btn-outline-dark fs-8 p-2">Update progress</a> -->
             </div>
         </div>
+    </a>
     </div>
-    <a href="#" class="d-block my-2">View all books</a>
+    {% else %}
+        <p>Not reading any books</p>
+    {% endif %}
+    <a href="/profile/{{request.user.id}}#current_reading_books" class="d-block my-2">View all books</a>
     <hr>
 </div>
-<div>
+<!-- <div>
     <h6>WANT TO READ</h6>
     <div>
         {% include 'base/want_read.html' %}
     </div>
     <hr>
-</div>
+</div> -->
 <div class="d-flex flex-column">
     <h6>BOOKSHELVES</h6>
-    <a href="#">3 Want to Read</a>
-    <a href="#">1 Currently Reading</a>
-    <a href="#">3 Read</a>
+  
+    <a href="/profile/{{request.user.id}}#want_to_read_books">{{current_reading_status.wr}} Want to Read</a>
+    <a href="/profile/{{request.user.id}}#current_reading_books">{{current_reading_status.cr}} Currently Reading</a>
+    <a href="/profile/{{request.user.id}}#read_books">{{current_reading_status.ar}} Read</a>
 </div>

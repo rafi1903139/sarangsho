@@ -8,14 +8,6 @@
 {% block external %}
 <!-- default css -->
 <link rel="stylesheet" href="{% static 'css/book_details.css' %}" type="text/css">
-<!-- Font Awesome Icon Library
-<link rel="stylesheet" href="{% static 'library/fa/css/font-awsome.min.css'}" type="text/css"> -->
-
-<!-- fontawsome cdn needs to be fixed-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
 <script src="{% static 'js/utilities.js' %}"></script>
 
 {% endblock external %}
@@ -45,7 +37,7 @@
                     class="btn btn-outline-secondary d-block mb-3 {% if user_status.status == 'Read' %} active {% endif %}">
                     Read</div>
 
-                <div class="btn d-block text-center my-2">Remove from my shelf</div>
+                <div id="modbtn_remove" class="btn d-block text-center my-2">Remove from my shelf</div>
                 <div class="btn btn-dark" id="btn_update_bookshelf">Continue</div>
             </div>
         </dialog>
@@ -55,6 +47,8 @@
                     <div class="cover-wrapper">
                         <img src="{{book.cover_image.url}}" alt="book cover">
                     </div>
+
+                    {% if request.user.id != None %}
                     <div class="button-wrapper">
                         <div class="user_status">
                             <input type="hidden" id="book_id" value="{{book.id}}">
@@ -118,6 +112,7 @@
                             modbtn_to_read = document.getElementById("modbtn_to_read");
                             modbtn_reading = document.getElementById("modbtn_reading");
                             modbtn_read = document.getElementById("modbtn_read");
+                            modbtn_remove = document.getElementById("modbtn_remove");
                             btn_update_bookshelf = document.getElementById("btn_update_bookshelf");
 
                             var csrfToken = getCookie('csrftoken');
@@ -131,6 +126,10 @@
                             modbtn_to_read.addEventListener('click', () => {
                                 toggle_btn(modbtn_to_read);
                             })
+                            modbtn_remove.addEventListener('click',() => {
+                                toggle_btn(modbtn_remove);
+                                modbtn_remove.classList.add("btn-secondary");
+                            })
 
                             btn_update_bookshelf.addEventListener('click', (e) => {
                                 // send the update request and fetch the response
@@ -138,8 +137,9 @@
                                 if (modbtn_read.classList.contains('active')) status = "Read";
                                 else if (modbtn_reading.classList.contains('active')) status = "Currently Reading";
                                 else if (modbtn_to_read.classList.contains('active')) status = "Want to read";
+                                else if (modbtn_remove.classList.contains('active')) status = "Remove"
 
-                                console.log(book_id, user_id);
+                                // console.log(book_id, user_id);
                                 var xhr = new XMLHttpRequest();
                                 xhr.open("POST", `/toread/${book_id}/${user_id}`)
                                 xhr.setRequestHeader('X-CSRFToken', csrfToken);
@@ -165,6 +165,8 @@
                                 modbtn_read.classList.remove('active');
                                 modbtn_reading.classList.remove('active');
                                 modbtn_to_read.classList.remove('active');
+                                modbtn_remove.classList.remove('active');
+                                modbtn_remove.classList.remove('btn-secondary');
 
                                 btn.classList.add('active');
                             }
@@ -209,53 +211,37 @@
 
                         </script>
                     </div>
-                    <div class="button-wrapper">
-                        <div class="button-style1">
-                            Buy online
-                        </div>
-                    </div>
+                    {% endif %}
 
                     <div class="button-wrapper">
+                        <!-- <div class="button-style1">
+                            Buy online
+                        </div> -->
+                    </div>
+
+                    <!--TODO-->
+                    <!-- <div class="button-wrapper">
                         <div class="button-style1">
                             Download PDF
                         </div>
-                    </div>
+                    </div> -->
 
 
-                    <div class="rating">
-                        
-                        <div class="rating-star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                        <h6>Rate this book</h6>
-                    </div>
+                
                 </div>
             </div>
 
             <div class="book-details-container">
 
                 <div class="book-details">
-                    {% include 'rating_star.html' %}
+
                     <h1 class="book-name">{{book.title}}</h1>
                     <h3 class="author-name">
                         {% for author in authors %}
                         {{author}}
                         {% endfor %}
                     </h3>
-                    <!-- <div class="rating">
-                        <div class="rating-star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                        <p>131 ratins . 254 reviews</p>
-                    </div> -->
+
                     <div class="book-body">
                         {{book.description}}
                     </div>
@@ -266,17 +252,19 @@
                         <hr>
                         <h3>About the author</h3>
                         {% for author in authors %}
-                        {{author}}
+                        <h5>{{author}}</h5>
                         {% endfor %}
-                        <div class="author-profile">
+                          <!--TODO-->
+                        <!-- <div class="author-profile">
                             <div class="author-profile-container">
                                 <div class="avatar"></div>
                                 <div class="author-name">
 
                                 </div>
                                 <div class="author-info">593 books, 3025 followers</div>
-                            </div>
-                            <div class="author-follow-btn"><button>Follow</button></div>
+                            </div> -->
+                          
+                            <!-- <div class="author-follow-btn"><button>Follow</button></div> -->
 
                         </div>
                         <div class="author-details">
@@ -301,7 +289,8 @@
                         </div>
 
                     </div>
-
+                    
+                    {% if request.user.id != None %}
                     <div>
                         <hr>
                         <h2> Ratings and reviews</h2>
@@ -326,7 +315,7 @@
                                 <div class="review wrapper">
                                     <button id="review_btn" class="btn btn-dark">Write a review</button>
                                     <dialog id="review_dialog">
-                                        Hello
+
                                         {% include 'base/review_form.html' %}
                                     </dialog>
 
@@ -352,163 +341,172 @@
 
                         </div>
                         <hr>
-                        <div>
+                        <!-- <div>
                             <h3>Followings</h3>
-                        </div>
-                        <div>
+                        </div> -->
+                        
+                    </div>
+                    {% endif %}
+                    <div>
+                        <hr>
+                        <h2>Community Reviews</h2>
+                        <!-- <div>
+
+                            <div class="communtiy-wrapper">
+
+
+                                 <div class="rating">
+                                    <div class="rating-star">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+                                    <p>131 ratins . 254 reviews</p>
+                                </div> 
+                                <hr style="border:3px solid #f1f1f1">
+
+                                <div class="row">
+                                    <div class="side">
+                                        <div>5 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-5"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>150</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>4 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-4"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>63</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>3 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>15</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>2 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>6</div>
+                                    </div>
+                                    <div class="side">
+                                        <div>1 star</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div>20</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="reviews-wrapper">
+
+                            {% for review in reviews %}
+
                             <hr>
-                            <h2>Community Reviews</h2>
-                            <div>
+                            <div class="review-container">
 
-                                <div class="communtiy-wrapper">
-
-
-                                    <!-- <div class="rating">
-                                        <div class="rating-star">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                        </div>
-                                        <p>131 ratins . 254 reviews</p>
-                                    </div> -->
-                                    <hr style="border:3px solid #f1f1f1">
-
-                                    <div class="row">
-                                        <div class="side">
-                                            <div>5 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-5"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>150</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>4 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-4"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>63</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>3 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-3"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>15</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>2 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-2"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>6</div>
-                                        </div>
-                                        <div class="side">
-                                            <div>1 star</div>
-                                        </div>
-                                        <div class="middle">
-                                            <div class="bar-container">
-                                                <div class="bar-1"></div>
-                                            </div>
-                                        </div>
-                                        <div class="side right">
-                                            <div>20</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="reviews-wrapper">
-
-                                {% for review in reviews %}
-
-                                <hr>
-                                <div class="review-container">
-
-                                    <div class="reviewer-profile">
-                                        <a href="{% url 'user_profile' review.user.id %}">
-                                            <img src="{{review.user.avatar.url}}" class="rounded-circle shadow-4 me-2"
-                                                style="width: 50px;" alt="Avatar" />
-                                        </a>
-                                        <a href="{% url 'user_profile' review.user.id %}">{{review.user.name}}</a>
-                                        <div class="review-count">49 reviews</div>
+                                <div class="reviewer-profile">
+                                    <a href="{% url 'user_profile' review.user.id %}">
+                                        <img src="{{review.user.avatar.url}}" class="rounded-circle shadow-4 me-2"
+                                            style="width: 50px;" alt="Avatar" />
+                                    </a>
+                                    <a href="{% url 'user_profile' review.user.id %}">{{review.user.name}}</a>
+                                    <div class="review-count">49 reviews</div>
 
 
+                                    {% if request.user.id != None %}
+                                    {% if review.user != request.user %}
 
-                                        {% if review.user != request.user %}
-
-                                        <button id="{{review.user.id}}" type="button" class="btn btn-dark"
-                                            onclick="follow_user('{{review.user.id}}')">
-                                            {% if request.user in review.user.followers.all %}
-                                            Following
-                                            {% else %}
-                                            Follow
-                                            {% endif %}
-
-                                        </button>
+                                    <button id="{{review.user.id}}" type="button" class="btn btn-dark"
+                                        onclick="follow_user('{{review.user.id}}')">
+                                        {% if request.user in review.user.followers.all %}
+                                        Following
+                                        {% else %}
+                                        Follow
                                         {% endif %}
-                                    </div>
-                                    <div class="Review">
-                                        <div class="user-rating">
-                                            <!-- <div class="rating-star">
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star checked"></span>
-                                                <span class="fa fa-star"></span>
-                                            </div> -->
-                                            <div class="user-rating-date">
-                                                {{review.created_at|date}}
-                                            </div>
-                                        </div>
-                                        <div class="review-body">
-                                            {{review.review_text}}
-                                        </div>
 
-                                        <div class="user-feedback">
-                                            <div class="like">
-                                                <i class="fa-regular fa-thumbs-up"></i>
-                                                Like
-                                            </div>
-                                            <div class="comment">
-                                                <i class="fa-solid fa-comment"></i>
-                                                Comment
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                    </button>
+                                    {% endif %}
+                                    {% endif %}
                                 </div>
+                                <div class="Review">
+                                    <div class="user-rating">
+                                    
+                                        <div class="rating">
+                                            {% for i in "12345" %}
+                                                {% if i|add:"0" <= review.rating %}
+                                                    <span class="fa fa-star checked"></span>
+                                                {% else %}
+                                                    <span class="fa fa-star"></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <div class="user-rating-date">
+                                            {{review.created_at|date}}
+                                        </div>
+                                    </div>
+                                    <div class="review-body">
+                                        {{review.review_text}}
+                                        <hr>
+                                    </div>
+                                   
 
+                                    <!-- <div class="user-feedback">
+                                        <div class="like">
+                                            <i class="fa-regular fa-thumbs-up"></i>
+                                            Like
+                                        </div>
+                                        <div class="comment">
+                                            <i class="fa-solid fa-comment"></i>
+                                            Comment
+                                        </div>
+                                    </div> -->
 
-                                {% endfor %}
-
-
-
-
-
-
-
-
-
+                                </div>
                             </div>
+
+
+                            {% endfor %}
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -516,10 +514,9 @@
 
 
 </main>
+
 {% endblock content %}
 
 {% block footer %}
 {% include 'footer.html' %}
 {% endblock footer %}
-
-

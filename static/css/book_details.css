@@ -297,3 +297,11 @@
     /* footer end */
 
 
+
+    /* book review form */
+
+    textarea{
+        width: 500px;
+        height: 500px;
+        background-color: black;
+    }

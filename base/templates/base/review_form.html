@@ -1,17 +1,31 @@
+<!-- 
+<style>
+      textarea{
+        width: 500px;
+        height: 300px;
+
+    }
+</style>
+
+<div class="container">
+
 <form method="POST" id="review_form">
   {% csrf_token %}
+ 
   <div>
-    <label for="review">What did you think?</label><br>
-    <textarea name="review" width="200px" height="500px"></textarea>
+    <label class="py-2" for="review">What did you think?</label><br>
+    <textarea name="review"></textarea>
   </div>
 
   <div class="form__action">
-    <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
-    <button class="btn btn--main" type="submit">Submit</button>
+    <a class="btn btn-dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+    <button class="btn btn-main" type="submit">Submit</button>
   </div>
 
   <input type="hidden" id="book_id" value="{{book.id}}">
 </form>
+
+</div>
 
 <script>
 
@@ -70,4 +84,206 @@
 
 
 
-</script>
+</script> -->
+
+<style>
+  .container-book-info {
+    width: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    /* Gap between grid items */
+  }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Review Form</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container mt-5">
+
+    <form method="POST" id="review_form">
+      {% csrf_token %}
+
+      <div class="form-group">
+
+        <div class="container-book-info">
+          <!-- Left side item -->
+          <div class="left">
+            <!-- Content for the left side -->
+            <div class="cover-wrapper">
+              <img src="{{book.cover_image.url}}" alt="book cover">
+            </div>
+          </div>
+          <!-- Right side items -->
+          <div class="right">
+            <!-- Upper item on the right side -->
+
+            <!-- Content for the upper right side item -->
+
+            <h5 class="text-left">{{book.title}}</h5>
+
+
+            <!-- Lower item on the right side -->
+
+            <h6 class="author-name text-center">
+              {% for author in authors %}
+              {{author}}
+              {% endfor %}
+            </h6>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="rating">Rating</label>
+        {% include 'rating_star.html' %}
+      </div>
+      <div class="form-group">
+        <label for="userThoughts">What do you think?</label>
+        <textarea name="review" class="form-control" id="userThoughts" rows="5"
+          placeholder="Share your thoughts on the book" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="{{request.META.HTTP_REFERER}}"><button type="button" class="btn btn-secondary">Cancel</button></a>
+      <input type="hidden" id="book_id" value="{{book.id}}">
+    </form>
+  </div>
+
+  <script>
+
+    
+    window.addEventListener('DOMContentLoaded', () => {
+      const book_id = document.getElementById('book_id').value;
+      var rating = 0;
+      const stars = document.querySelectorAll('.star');
+
+
+      stars.forEach(function (star) {
+        // star.addEventListener('mouseover', function () {
+        //   highlightStars(this.dataset.rating);
+        // });
+
+        // star.addEventListener('mouseout', function () {
+        //   resetStars();
+        // });
+        star.addEventListener('click', function () {
+          rating = this.dataset.rating;
+          highlightStars(this.dataset.rating);
+        });
+      });
+
+      function highlightStars(rating) {
+      stars.forEach(function (star) {
+        if (star.dataset.rating <= rating) {
+          star.classList.add('highlight');
+        } else {
+          star.classList.remove('highlight');
+        }
+      });
+    }
+
+    function resetStars() {
+      stars.forEach(function (star) {
+        star.classList.remove('highlight');
+      });
+    }
+
+    function sendRatingToServer(rating, book_id, user_id) {
+      // Perform AJAX call to send rating to the server
+      // Replace 'your-url' with the actual URL to send the data
+      // Example using fetch API:
+      console.log(rating);
+      fetch(`/addrating/${book_id}/${user_id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          rating: rating,
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response from the server (if needed)
+          console.log("Show alert message of success")
+        })
+        .catch(error => {
+          // Handle errors
+          console.log("error")
+        });
+    }
+
+
+
+      function sendData() {
+
+        const xhr = new XMLHttpRequest();
+
+        const fd = new FormData(form);
+
+
+
+        xhr.open("POST", `/review/new/${book_id}`);
+
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              // handle successful review
+              console.log("Review submitted")
+              window.location.replace(`/books/${book_id}`);
+
+            }
+            else {
+              console.log("Sumthing is wrong while submitting review");
+            }
+          }
+        }
+
+        xhr.send(fd);
+      }
+
+      // get the form element
+      const form = document.getElementById("review_form");
+
+      form.addEventListener('keypress', (e) => {
+        if (e.keyCode == 13) {
+          // enter is pressed
+          e.preventDefault()
+          form.requestSubmit();
+        }
+      })
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendRatingToServer(rating, book_id, user_id);
+        sendData();
+      })
+
+    }
+    )
+
+
+
+
+
+  </script>
+
+  <!-- Bootstrap JS, Popper.js, and jQuery (for dropdowns) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

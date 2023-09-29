@@ -1,83 +1,84 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Profile
 {% endblock title %}
 
+{% block external %}
+<link href="{% static 'css/user_profile_style.css' %}" rel='stylesheet' type="text/css">
+<link href="{% static 'css/home_style.css' %}" rel="stylesheet" type="text/css">
+{% endblock external %}
+
 {% block navbar %}
-    {% include 'navbar.html' %}
+{% include 'navbar.html' %}
 {% endblock %}
 
 {% block content %}
 
-<style>
-    .container {
-        display: grid;
-        grid-template-columns: 4fr 1fr;
-
-    }
-</style>
 
 <!-- 
     source
     https://mdbootstrap.com/docs/standard/extended/avatar/
  -->
 <main>
-<div class="container">
-    <div>
-        <section>
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12">
-                        <div class="card" style="border-radius: 15px;">
-                            <div class="card-body p-4">
-                                <div class="d-flex text-black">
-                                    <div class="flex-shrink-0">
-                                        <img src="{{user.avatar.url}}"
-                                            alt="Generic placeholder image" class="img-fluid"
-                                            style="width: 180px; border-radius: 10px;" />
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-1">{{user}}</h5>
-                                        <p class="mb-2 pb-1" style="color: #2b2a2a;">
-                                            {{user.bio}}
-                                        </p>
-                                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
-                                            style="background-color: #efefef;">
-                                            <div>
-                                                <p class="small text-muted mb-1">
-                                                    Reviews
-                                                </p>
-                                                <p class="mb-0">41</p>
-                                            </div>
-                                            <div class="px-3">
-                                                <p class="small text-muted mb-1">
-                                                    Followers
-                                                </p>
-                                                <p class="mb-0">976</p>
-                                            </div>
-                                            <div>
-                                                <p class="small text-muted mb-1">
-                                                    Rating
-                                                </p>
-                                                <p class="mb-0">8.5</p>
-                                            </div>
+    <div class="container">
+        <div>
+            <section>
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-left align-items-center h-100">
+                        <div class="col-8">
+                            <div class="card" style="border-radius: 15px;">
+                                <div class="card-body p-4">
+                                    <div class="d-flex text-black">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{user.avatar.url}}" alt="Generic placeholder image"
+                                                class="img-fluid" style="width: 180px; border-radius: 10px;" />
                                         </div>
-                                        <div class="d-flex pt-1">
-                                            <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">
-                                                Chat
-                                            </button>
-                                            {% if user != request.user %}
-                                            <button id="{{user.id}}" type="button" class="btn btn-outline-primary me-1 flex-grow-1"
-                                            onclick="follow_user('{{user.id}}')">
-                                            {% if request.user in user.followers.all %}
-                                            Following
-                                            {% else %}
-                                            Follow
-                                            {% endif %}
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5 class="mb-1">{{user}}</h5>
+                                            <p class="mb-2 pb-1" style="color: #2b2a2a;">
+                                                {{user.bio}}
+                                            </p>
+                                            <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                                                style="background-color: #efefef;">
+                                                <div>
+                                                    <p class="small text-muted mb-1">
+                                                        Reviews
+                                                    </p>
+                                                    <p class="mb-0">{{reviews|length}}</p>
+                                                </div>
+                                                <div class="px-3">
+                                                    <p class="small text-muted mb-1">
+                                                        Followers
+                                                    </p>
+                                                    <p class="mb-0">{{user.followers.all|length}}</p>
+                                                </div>
+                                                <!-- <div>
+                                                    <p class="small text-muted mb-1">
+                                                        Rating
+                                                    </p>
+                                                    <p class="mb-0">8.5</p>
+                                                </div> -->
+                                                
+                                            </div>
+                                            <div class="d-flex pt-1">
+                                                <!-- <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">
+                                                    Chat
+                                                </button> -->
+                                                {% if user != request.user %}
+                                                <button id="{{user.id}}" type="button"
+                                                    class="btn btn-outline-primary me-1 flex-grow-1"
+                                                    onclick="follow_user('{{user.id}}')">
+                                                    {% if request.user in user.followers.all %}
+                                                    Following
+                                                    {% else %}
+                                                    Follow
+                                                    {% endif %}
 
-                                        </button>
-                                            {% endif %}
+                                                </button>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -85,31 +86,141 @@ Profile
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <div class="my-4">
+                <h3>{{user}}'s bookshelves</h3>
+                <hr>
+                <div>
+                    <a id="current_reading_books">
+                        <h4 class="my-4">
+                            Currently Reading
+                        </h4>
+                    </a>
+                    <div class="container books-container">
+                        {% for book in books.currently_reading %}
+                        <a href="{% url 'book_detail' book.id %}">
+                            <div class="cover-wrapper">
+                                <img src="{{book.cover_image.url}}" alt="book cover">
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% if books.currently_reading|length == 0 %}
+                    <p>Currently not reading any book</p>
+                    {% endif %}
+                </div>
+
+
+                <div class="my-4">
+
+                    <h4 id="want_to_read_books" class="my-4">
+                        Want to Read
+                    </h4>
+                    <div class="container books-container">
+                        {% for book in books.want_to_read %}
+                        <a href="{% url 'book_detail' book.id %}">
+                            <div class="cover-wrapper">
+                                <img src="{{book.cover_image.url}}" alt="book cover">
+                            </div>
+                        </a>
+                        {% endfor %}
+                        {% if books.want_to_read|length == 0 %}
+                        <p>Nothing to read</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="my-4">
+                    <h4 id="read_books" class="my-4">
+                        Read
+                    </h4>
+                    <div class="container books-container">
+                        {% for book in books.read %}
+                        <a href="{% url 'book_detail' book.id %}">
+                            <div class="cover-wrapper">
+                                <img src="{{book.cover_image.url}}" alt="book cover">
+                            </div>
+                        </a>
+                        {% endfor %}
+                        {% if books.read|length == 0 %}
+                        <p>Not completed any book</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </section>
+            <!-- <div>
+                <h3>{{user}}'s recent updates</h3>
+                <hr>
+            </div> -->
 
-        <div>
-            {{user}}'s bookshelves
-            <hr>
+            <div class="my-4">
+                <h3>{{user}}'s Reviews</h3>
+                <hr>
+                {% for review in reviews %}
+                <div class="my-4 reviews rounded ">
+                    
+                    <div class="review-body m-3">
+                        {{review.review_text}}
+                    </div>
+                    <div class="review-book d-flex m-3 p-2 border border-dark">
+                        <div class="book-cover ">
+                            <a href="{% url 'book_detail' review.book.id %}"><img class="shadow" src="{{review.book.cover_image.url}}" alt="book-cover"></a>
+                        </div>
+                        <div class="book-details">
+                            <h5><a href="{% url 'book_detail' review.book.id %}">{{activity.book.title}}</a></h5>
+                            <p>by 
+                                <!-- can cause error for multiple authors -->
+                               {% for author in review.book.authors.all %}
+                               {{author}}
+                               {% endfor %} 
+                            </p>
+                            <p>
+                                {{ review.book.description|slice:"0:500" }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- <div class="mx-3">
+                        <a href="#">Like . </a>
+                        <a href="#">Comment</a>
+                    </div> -->
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="my-4"></div>
+
         </div>
-        <div>
-            {{user}}'s recent updates
-            <hr>
+        <div class="py-5">
+
+            <div>
+                People {{user}} is following
+                <hr>
+                <h1>
+                    <div class="following-container">
+                        {% for following in user.following.all %}
+                        <a href="{% url 'user_profile' following.id %}">
+                            <div class="img-container">
+                                <img src="{{following.avatar.url}}" alt="Generic placeholder image" class="img-fluid"
+                                    style="width: 180px; border-radius: 10px;" />
+                            </div>
+                        </a>
+
+                        {% endfor %}
+                    </div>
+                </h1>
+            </div>
+
         </div>
-    
     </div>
-    <div class="py-5">
-
-        <div>
-            People {{user}} is following
-            <hr>
-        </div>
-
-    </div>
-</div>
 
 
 
 </main>
 
 {% endblock content %}
+
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock footer %}
