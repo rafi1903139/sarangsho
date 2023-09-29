@@ -33,7 +33,7 @@ Before you begin, ensure you have met the following requirements:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/book-review-website.git
+   git clone https://github.com/rafi1903139/sarangsho.git
 
 
 2. **Create a virtual environment and activate it:**
