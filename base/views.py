@@ -110,10 +110,12 @@ def book_details(request, pk):
     if request.user.id != None:
         try:
             user_status = ReadingStatus.objects.get(book=book, user=request.user)
+            followers = request.user.following.all()
+            
         except ObjectDoesNotExist:
             print('status is not provided')
     
-    followers = request.user.following.all()
+    
 
     context = {
         "book": book,
